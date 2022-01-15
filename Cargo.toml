@@ -1,0 +1,10 @@
+[workspace]
+members = [
+	"crates/*"
+]
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+debug = 1
+incremental = true
