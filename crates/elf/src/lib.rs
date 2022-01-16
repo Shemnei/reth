@@ -1,6 +1,116 @@
 // Enable/disable `no_std` depending on the feature
 #![cfg_attr(not(feature = "std"), no_std)]
 
+mod util {
+	/// Consumes bytes from the `bytes` slice and converts them
+	/// to the requested type. The `bytes` slice will be advanced
+	/// by the amount of bytes consumed for the type.
+	macro_rules! consume {
+		// Consumes a single byte from `bytes`.
+		( $bytes:expr => u8 ) => {{
+			consume!(@single $bytes)
+		}};
+		// Consumes `size_of<$type>` bytes and converts them to
+		// `$type` with big endianness.
+		( $bytes:expr => be $type:ty ) => {{
+			const SIZE: usize = core::mem::size_of::<$type>();
+
+			<$type>::f(consume!(@arr $bytes => SIZE))
+		}};
+		// Consumes `size_of<$type>` bytes and converts them to
+		// `$type` with little endianness.
+		( $bytes:expr => le $type:ty ) => {{
+			const SIZE: usize = core::mem::size_of::<$type>();
+
+			<$type>::from_le_bytes(consume!(@arr $bytes => SIZE))
+		}};
+		// Consumes `size_of<$type>` bytes and converts them to
+		// the requested endianness (@see `EI_DATA_LE` and
+		// `EI_DATA_BE` for possible values).
+		( $bytes:expr , $endianness:expr => $type:ty ) => {{
+			const SIZE: usize = core::mem::size_of::<$type>();
+
+			// TODO: return err
+			match $endianness {
+				crate::header::consts::ident::data::EI_DATA_BE => Ok(<$type>::from_be_bytes(consume!(@arr $bytes => SIZE))),
+				crate::header::consts::ident::data::EI_DATA_LE => Ok(<$type>::from_le_bytes(consume!(@arr $bytes => SIZE))),
+				_ => Err(crate::error::Error::new(crate::error::ErrorKind::UnknownEndianess))
+			}
+		}};
+		// Consumes `$len` bytes and returns them as array.
+		( $bytes:expr => $len:expr ) => {{
+			crate::util::consume!(@arr $bytes => $len)
+		}};
+		// PRIVATE: Shared code to consume a single byte.
+		( @single $bytes:expr ) => {{
+			let buf = $bytes[0];
+			$bytes = &$bytes[1..];
+			buf
+		}};
+		// PRIVATE: Shared code to consume a byte array.
+		( @arr $bytes:expr => $len:expr ) => {{
+			let mut buf = [0u8; $len];
+			let (left, right) = $bytes.split_at($len);
+			buf.copy_from_slice(left);
+			$bytes = right;
+			buf
+		}};
+	}
+
+	/// Exports macro for use in other modules of the crate.
+	pub(crate) use consume;
+
+	/// Defines a list on constants with some added doc comments and a convienient
+	/// function which converts a value of the shared `field/type` to a string
+	/// representation.
+	macro_rules! def_consts {
+		(
+			$field:ident : $size:ty : $as_str:ident => {
+				$(
+					$(
+						#[doc = $doc:literal]
+					)+
+					$name:ident : $repr:literal = $value:literal ,
+				)+
+			}
+			$(
+				, {
+					$(
+						$extra_match_pattern:pat => $extra_match_value:literal ,
+					)+
+				}
+			)?
+		) => {
+			$(
+				#[doc = "Field `"]
+				#[doc = stringify!($field)]
+				#[doc = "`: "]
+				$(
+					#[doc = $doc]
+				)+
+				pub const $name: $size = $value;
+			)+
+
+			pub fn $as_str(value: $size) -> &'static str {
+				match value {
+					$(
+						$name => $repr,
+					)+
+					$(
+						$(
+							$extra_match_pattern => $extra_match_value ,
+						)+
+					)?
+					_ => "UNKNOWN",
+				}
+			}
+		};
+	}
+
+	/// Exports macro for use in other modules of the crate.
+	pub(crate) use def_consts;
+}
+
 pub mod error {
 	use core::fmt;
 
@@ -73,38 +183,6 @@ pub mod header {
 	/// - <http://www.sco.com/developers/gabi/2000-07-17/ch4.eheader.html>
 	/// - <https://en.wikipedia.org/wiki/Executable_and_Linkable_Format>
 	pub mod consts {
-		macro_rules! def_consts {
-			(
-				$field:ident : $size:ty : $as_str:ident => {
-					$(
-						$(
-							#[doc = $doc:literal]
-						)+
-						$name:ident : $repr:literal = $value:literal ,
-					)+
-				}
-			) => {
-				$(
-					#[doc = "Field `"]
-					#[doc = stringify!($field)]
-					#[doc = "`: "]
-					$(
-						#[doc = $doc]
-					)+
-					pub const $name: $size = $value;
-				)+
-
-				pub fn $as_str(value: $size) -> &'static str {
-					match value {
-						$(
-							$name => $repr,
-						)+
-						_ => "UNKNOWN",
-					}
-				}
-			};
-		}
-
 		pub mod ident {
 			pub mod index {
 				/// Field `ei_mag0`: Magic constant `0x7f`.
@@ -139,7 +217,7 @@ pub mod header {
 			}
 
 			pub mod class {
-				def_consts! {
+				crate::util::def_consts! {
 					ei_class : u8 : ei_class_as_str => {
 						/// Signifies 32-bit format.
 						EI_CLASS_32 : "32-bit" = 1,
@@ -151,7 +229,7 @@ pub mod header {
 			}
 
 			pub mod data {
-				def_consts! {
+				crate::util::def_consts! {
 					ei_data : u8 : ei_data_as_str => {
 						/// Signifies little endianness.
 						EI_DATA_LE : "LE" = 1,
@@ -168,7 +246,7 @@ pub mod header {
 			}
 
 			pub mod osabi {
-				def_consts! {
+				crate::util::def_consts! {
 					ei_osabi : u8 : ei_osabi_as_str => {
 						/// System V.
 						EI_OSABI_SYSTEMV : "System V" = 0x00,
@@ -229,7 +307,7 @@ pub mod header {
 		}
 
 		pub mod typ {
-			def_consts! {
+			crate::util::def_consts! {
 				e_type : u16 : e_type_as_str => {
 					/// ET_NONE.
 					E_TYPE_ET_NONE : "ET_NONE" = 0x0000,
@@ -262,7 +340,7 @@ pub mod header {
 		}
 
 		pub mod machine {
-			def_consts! {
+			crate::util::def_consts! {
 				e_machine : u16 : e_machine_as_str => {
 					/// Unspecified.
 					E_MACHINE_UNSPECIFIED : "Unspecified" = 0x0000,
@@ -413,6 +491,9 @@ pub mod header {
 
 					/// WDC 65C816.
 					E_MACHINE_WDC65C816 : "WDC 65C816" = 0x0101,
+				}, {
+					(0x0b..=0x0d) => "RESERVED",
+					(0x18..=0x23) => "RESERVED",
 				}
 			}
 		}
@@ -525,69 +606,15 @@ pub mod header {
 			impl Header {
                 #[allow(unused_assignments, clippy::eval_order_dependence)]
 				pub fn from_bytes(mut bytes: &[u8]) -> crate::error::Result<Self> {
-                    /// Consumes bytes from the `bytes` slice and converts them
-                    /// to the requested type. The `bytes` slice will be advanced
-                    /// by the amount of bytes consumed for the type.
-					macro_rules! consume {
-                        // Consumes a single byte from `bytes`.
-                        ( u8 ) => {{
-                            consume!(@single)
-                        }};
-                        // Consumes `size_of<$type>` bytes and converts them to
-                        // `$type` with big endianness.
-						( be $type:ty ) => {{
-							const SIZE: usize = core::mem::size_of::<$type>();
-
-							<$type>::f(consume!(@arr SIZE))
-						}};
-                        // Consumes `size_of<$type>` bytes and converts them to
-                        // `$type` with little endianness.
-						( le $type:ty ) => {{
-							const SIZE: usize = core::mem::size_of::<$type>();
-
-							<$type>::from_le_bytes(consume!(@arr SIZE))
-						}};
-                        // Consumes `size_of<$type>` bytes and converts them to
-                        // the requested endianness (@see `EI_DATA_LE` and
-                        // `EI_DATA_BE` for possible values).
-						( $endianness:expr => $type:ty ) => {{
-							const SIZE: usize = core::mem::size_of::<$type>();
-
-                            // TODO: return err
-                            match $endianness {
-                                crate::header::consts::ident::data::EI_DATA_BE => Ok(<$type>::from_be_bytes(consume!(@arr SIZE))),
-                                crate::header::consts::ident::data::EI_DATA_LE => Ok(<$type>::from_le_bytes(consume!(@arr SIZE))),
-                                _ => Err(crate::error::Error::new(crate::error::ErrorKind::UnknownEndianess))
-							}
-						}};
-                        // Consumes `$len` bytes and returns them as array.
-						(  $len:expr ) => {{
-                            consume!(@arr $len)
-                        }};
-                        // PRIVATE: Shared code to consume a single byte.
-                        ( @single ) => {{
-                            let buf = bytes[0];
-                            bytes = &bytes[1..];
-                            buf
-                        }};
-                        // PRIVATE: Shared code to consume a byte array.
-						( @arr $len:expr ) => {{
-							let mut buf = [0u8; $len];
-							let (left, right) = bytes.split_at($len);
-							buf.copy_from_slice(left);
-							bytes = right;
-							buf
-						}};
-					}
+					use crate::util::consume;
 
 					if bytes.len() < core::mem::size_of::<Self>() {
                         return Err(crate::error::Error::new(crate::error::ErrorKind::InsufficantSize))
 					}
 
-
                     const SIZE_IDENT: usize = core::mem::size_of::<crate::header::Ident>();
 
-                    let e_ident = crate::header::Ident(consume!(SIZE_IDENT));
+                    let e_ident = crate::header::Ident(consume!(bytes => SIZE_IDENT));
                     if e_ident.ei_mag() != &[0x7f, 0x45, 0x4c, 0x46] {
                         return Err(crate::error::Error::new(crate::error::ErrorKind::InvalidMagic))
                     }
@@ -595,19 +622,19 @@ pub mod header {
 
                     Ok(Self {
                         e_ident,
-                        e_type: consume!(endianness => u16)?,
-                        e_machine: consume!(endianness => u16)?,
-                        e_version: consume!(endianness => u32)?,
-                        e_entry: consume!(endianness => $size)?,
-                        e_phoff: consume!(endianness => $size)?,
-                        e_shoff: consume!(endianness => $size)?,
-                        e_flags: consume!(endianness => u32)?,
-                        e_ehsize: consume!(endianness => u16)?,
-                        e_phentsize: consume!(endianness => u16)?,
-                        e_phnum: consume!(endianness => u16)?,
-                        e_shentsize: consume!(endianness => u16)?,
-                        e_shnum: consume!(endianness => u16)?,
-                        e_shstrndx: consume!(endianness => u16)?,
+                        e_type: consume!(bytes, endianness => u16)?,
+                        e_machine: consume!(bytes, endianness => u16)?,
+                        e_version: consume!(bytes, endianness => u32)?,
+                        e_entry: consume!(bytes, endianness => $size)?,
+                        e_phoff: consume!(bytes, endianness => $size)?,
+                        e_shoff: consume!(bytes, endianness => $size)?,
+                        e_flags: consume!(bytes, endianness => u32)?,
+                        e_ehsize: consume!(bytes, endianness => u16)?,
+                        e_phentsize: consume!(bytes, endianness => u16)?,
+                        e_phnum: consume!(bytes, endianness => u16)?,
+                        e_shentsize: consume!(bytes, endianness => u16)?,
+                        e_shnum: consume!(bytes, endianness => u16)?,
+                        e_shstrndx: consume!(bytes, endianness => u16)?,
                     })
 				}
 			}
@@ -661,11 +688,11 @@ pub mod header {
 		};
 	}
 
-	pub mod u32 {
+	pub mod elf32 {
 		header!(u32);
 	}
 
-	pub mod u64 {
+	pub mod elf64 {
 		header!(u64);
 
 		#[cfg(test)]
@@ -691,6 +718,211 @@ pub mod header {
 
 				let header = Header::from_bytes(&bytes).unwrap();
 				println!("{:#}", header);
+			}
+		}
+	}
+}
+
+pub mod program_header {
+	pub mod consts {
+		pub mod typ {
+			crate::util::def_consts! {
+				p_type : u32 : p_type_as_str => {
+					/// Program header table entry unused.
+					P_TYPE_PT_NULL : "PT_NULL" = 0x00000000,
+
+					/// Loadable segment.
+					P_TYPE_PT_LOAD: "PT_LOAD" = 0x00000001,
+
+					/// Dynamic linking information.
+					P_TYPE_PT_DYNAMIC: "PT_DYNAMIC" = 0x00000002,
+
+					/// Interpreter information.
+					P_TYPE_PT_INTERP: "PT_INTERP" = 0x00000003,
+
+					/// Auxiliary information.
+					P_TYPE_PT_NOTE: "PT_NOTE" = 0x00000004,
+
+					/// Reserved.
+					P_TYPE_PT_SHLIB: "PT_SHLIB" = 0x00000005,
+
+					/// Segment containing program header table itself.
+					P_TYPE_PT_PHDR: "PT_PHDR" = 0x00000006,
+
+					/// Thead-Local Storage template.
+					P_TYPE_PT_TLS: "PT_TLS" = 0x00000007,
+				}, {
+					(0x60000000..=0x6FFFFFFF) => "RESERVED: Operating system specific",
+					(0x70000000..=0x7FFFFFFF) => "RESERVED: Processor specific",
+				}
+			}
+		}
+	}
+
+	pub mod elf32 {
+		use core::fmt;
+
+		use crate::error::Result;
+
+		#[repr(C)]
+		#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+		pub struct ProgramHeader {
+			/// Field `p_type`: Identifies the type of the segment.
+			p_type: u32,
+
+			/// Field `p_offset`: Offset of the segment in the file image.
+			p_offset: u32,
+
+			/// Field `p_vaddr`: Virtual address of the segment in memory.
+			p_vaddr: u32,
+
+			/// Field `p_paddr`: On systems where physical address is relevant, reserved for segment's physical address.
+			p_paddr: u32,
+
+			/// Field `p_filesz`: Size in bytes of the segment in the file image (may be 0).
+			p_filesz: u32,
+
+			/// Field `p_memsz`: Size in bytes of the segment in memory (may be 0).
+			p_memsz: u32,
+
+			/// Field `p_flags`: Segment-dependent flags.
+			p_flags: u32,
+
+			/// Field `p_align`: Specifies alignment.
+			///
+			/// `0` and `1` specify no alignment. Otherwise should be a positive,
+			/// integral power of `2` with `p_vaddr` equating `p_offset` modulus
+			/// `p_align`.
+			p_align: u32,
+		}
+
+		impl ProgramHeader {
+			#[allow(unused_assignments)]
+			pub fn from_bytes(
+				endianness: u8,
+				mut bytes: &[u8],
+			) -> Result<Self> {
+				use crate::util::consume;
+
+				Ok(Self {
+					p_type: consume!(bytes, endianness => u32)?,
+					p_offset: consume!(bytes, endianness => u32)?,
+					p_vaddr: consume!(bytes, endianness => u32)?,
+					p_paddr: consume!(bytes, endianness => u32)?,
+					p_filesz: consume!(bytes, endianness => u32)?,
+					p_memsz: consume!(bytes, endianness => u32)?,
+					p_flags: consume!(bytes, endianness => u32)?,
+					p_align: consume!(bytes, endianness => u32)?,
+				})
+			}
+		}
+
+		#[rustfmt::skip]
+		impl fmt::Display for ProgramHeader {
+			fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+				f.write_fmt(format_args!(r#"ProgramHeader:
+	p_type  : {}
+	p_offset: {}
+	p_vaddr : 0x{:08x}
+	p_paddr : 0x{:08x}
+	p_filesz: {}
+	p_memsz : {}
+	p_flags : 0b{:032b}
+	p_align : {}
+	"#,
+					crate::program_header::consts::typ::p_type_as_str(self.p_type),
+					self.p_flags,
+					self.p_offset,
+					self.p_vaddr,
+					self.p_paddr,
+					self.p_filesz,
+					self.p_memsz,
+					self.p_align
+				))
+			}
+		}
+	}
+
+	pub mod elf64 {
+		use core::fmt;
+
+		use crate::error::Result;
+
+		#[repr(C)]
+		#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+		pub struct ProgramHeader {
+			/// Field `p_type`: Identifies the type of the segment.
+			p_type: u32,
+
+			/// Field `p_flags`: Segment-dependent flags.
+			p_flags: u32,
+
+			/// Field `p_offset`: Offset of the segment in the file image.
+			p_offset: u64,
+
+			/// Field `p_vaddr`: Virtual address of the segment in memory.
+			p_vaddr: u64,
+
+			/// Field `p_paddr`: On systems where physical address is relevant, reserved for segment's physical address.
+			p_paddr: u64,
+
+			/// Field `p_filesz`: Size in bytes of the segment in the file image (may be 0).
+			p_filesz: u64,
+
+			/// Field `p_memsz`: Size in bytes of the segment in memory (may be 0).
+			p_memsz: u64,
+
+			/// Field `p_align`: Specifies alignment.
+			///
+			/// `0` and `1` specify no alignment. Otherwise should be a positive,
+			/// integral power of `2` with `p_vaddr` equating `p_offset` modulus
+			/// `p_align`.
+			p_align: u64,
+		}
+
+		impl ProgramHeader {
+			#[allow(unused_assignments)]
+			pub fn from_bytes(
+				endianness: u8,
+				mut bytes: &[u8],
+			) -> Result<Self> {
+				use crate::util::consume;
+
+				Ok(Self {
+					p_type: consume!(bytes, endianness => u32)?,
+					p_flags: consume!(bytes, endianness => u32)?,
+					p_offset: consume!(bytes, endianness => u64)?,
+					p_vaddr: consume!(bytes, endianness => u64)?,
+					p_paddr: consume!(bytes, endianness => u64)?,
+					p_filesz: consume!(bytes, endianness => u64)?,
+					p_memsz: consume!(bytes, endianness => u64)?,
+					p_align: consume!(bytes, endianness => u64)?,
+				})
+			}
+		}
+
+		#[rustfmt::skip]
+		impl fmt::Display for ProgramHeader {
+			fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+				f.write_fmt(format_args!(r#"ProgramHeader:
+	p_type  : {}
+	p_flags : 0b{:032b}
+	p_offset: {}
+	p_vaddr : 0x{:016x}
+	p_paddr : 0x{:016x}
+	p_filesz: {}
+	p_memsz : {}
+	p_align : {}
+	"#,
+					crate::program_header::consts::typ::p_type_as_str(self.p_type),
+					self.p_flags,
+					self.p_offset,
+					self.p_vaddr,
+					self.p_paddr,
+					self.p_filesz,
+					self.p_memsz,
+					self.p_align
+				))
 			}
 		}
 	}
