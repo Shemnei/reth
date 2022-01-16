@@ -625,10 +625,10 @@ pub mod header {
 	e_type     : {}
 	e_machine  : {}
 	e_version  : {}
-	e_entry    : {:#x}
+	e_entry    : 0x{:0size$x}
 	e_phoff    : {}
 	e_shoff    : {}
-	e_flags    : {:#b}
+	e_flags    : 0b{:032b}
 	e_ehsize   : {}
 	e_phentsize: {}
 	e_phnum    : {}
@@ -652,7 +652,8 @@ pub mod header {
 						self.e_phnum,
 						self.e_shentsize,
 						self.e_shnum,
-						self.e_shstrndx
+						self.e_shstrndx,
+						size = core::mem::size_of::<$size>() * 2,
 					))
 
 				}
