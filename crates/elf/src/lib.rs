@@ -68,11 +68,43 @@ pub mod error {
 }
 
 pub mod header {
-	/// References:
-	///     - <https://refspecs.linuxbase.org/elf/elf.pdf>
-	///     - <http://www.sco.com/developers/gabi/2000-07-17/ch4.eheader.html>
-	///     - <https://en.wikipedia.org/wiki/Executable_and_Linkable_Format>
+	/// # References
+	/// - <https://refspecs.linuxbase.org/elf/elf.pdf>
+	/// - <http://www.sco.com/developers/gabi/2000-07-17/ch4.eheader.html>
+	/// - <https://en.wikipedia.org/wiki/Executable_and_Linkable_Format>
 	pub mod consts {
+		macro_rules! def_consts {
+			(
+				$field:ident : $size:ty : $as_str:ident => {
+					$(
+						$(
+							#[doc = $doc:literal]
+						)+
+						$name:ident : $repr:literal = $value:literal ,
+					)+
+				}
+			) => {
+				$(
+					#[doc = "Field `"]
+					#[doc = stringify!($field)]
+					#[doc = "`: "]
+					$(
+						#[doc = $doc]
+					)+
+					pub const $name: $size = $value;
+				)+
+
+				pub fn $as_str(value: $size) -> &'static str {
+					match value {
+						$(
+							$name => $repr,
+						)+
+						_ => "UNKNOWN",
+					}
+				}
+			};
+		}
+
 		pub mod ident {
 			pub mod index {
 				/// Field `ei_mag0`: Magic constant `0x7f`.
@@ -107,19 +139,27 @@ pub mod header {
 			}
 
 			pub mod class {
-				/// Field `ei_class`: Signifies 32-bit format.
-				pub const EI_CLASS_32: u8 = 1;
+				def_consts! {
+					ei_class : u8 : ei_class_as_str => {
+						/// Signifies 32-bit format.
+						EI_CLASS_32 : "32-bit" = 1,
 
-				/// Field `ei_class`: Signifies 64-bit format.
-				pub const EI_CLASS_64: u8 = 2;
+						/// Signifies 64-bit format.
+						EI_CLASS_64 : "64-bit" = 2,
+					}
+				}
 			}
 
 			pub mod data {
-				/// Field `ei_data`: Signifies little endianness.
-				pub const EI_DATA_LE: u8 = 1;
+				def_consts! {
+					ei_data : u8 : ei_data_as_str => {
+						/// Signifies little endianness.
+						EI_DATA_LE : "LE" = 1,
 
-				/// Field `ei_data`: Signifies big endianness.
-				pub const EI_DATA_BE: u8 = 2;
+						/// Signifies big endianness.
+						EI_DATA_BE : "BE" = 2,
+					}
+				}
 			}
 
 			pub mod version {
@@ -128,359 +168,252 @@ pub mod header {
 			}
 
 			pub mod osabi {
-				/// Field `ei_osabi`: System V.
-				pub const EI_OSABI_SYSTEMV: u8 = 0x00;
+				def_consts! {
+					ei_osabi : u8 : ei_osabi_as_str => {
+						/// System V.
+						EI_OSABI_SYSTEMV : "System V" = 0x00,
 
-				/// Field `ei_osabi`: HP-UX.
-				pub const EI_OSABI_HPUX: u8 = 0x01;
+						/// HP-UX.
+						EI_OSABI_HPUX : "HP-UX" = 0x01,
 
-				/// Field `ei_osabi`: NetBSD.
-				pub const EI_OSABI_NETBSD: u8 = 0x02;
+						/// NetBSD.
+						EI_OSABI_NETBSD : "NetBSD" = 0x02,
 
-				/// Field `ei_osabi`: Linux.
-				pub const EI_OSABI_LINUX: u8 = 0x03;
+						/// Linux.
+						EI_OSABI_LINUX : "Linux" = 0x03,
 
-				/// Field `ei_osabi`: GNU Hurd.
-				pub const EI_OSABI_GNUHURD: u8 = 0x04;
+						/// GNU Hurd.
+						EI_OSABI_GNUHURD : "GNU Hurd" = 0x04,
 
-				/// Field `ei_osabi`: Solaris.
-				pub const EI_OSABI_SOLARIS: u8 = 0x06;
+						/// Solaris.
+						EI_OSABI_SOLARIS : "Solaris" = 0x06,
 
-				/// Field `ei_osabi`: AIX.
-				pub const EI_OSABI_AIX: u8 = 0x07;
+						/// AIX.
+						EI_OSABI_AIX : "AIX" = 0x07,
 
-				/// Field `ei_osabi`: IRIX.
-				pub const EI_OSABI_IRIX: u8 = 0x08;
+						/// IRIX.
+						EI_OSABI_IRIX : "IRIX" = 0x08,
 
-				/// Field `ei_osabi`: FreeBSD.
-				pub const EI_OSABI_FREEBSD: u8 = 0x09;
+						/// FreeBSD.
+						EI_OSABI_FREEBSD : "FreeBSD" = 0x09,
 
-				/// Field `ei_osabi`: Tru64.
-				pub const EI_OSABI_TRU64: u8 = 0x0a;
+						/// Tru64.
+						EI_OSABI_TRU64 : "Tru64" = 0x0a,
 
-				/// Field `ei_osabi`: Novell Modesto.
-				pub const EI_OSABI_NOVELLMODESTO: u8 = 0x0b;
+						/// Novell Modesto.
+						EI_OSABI_NOVELLMODESTO : "Novell Modesto" = 0x0b,
 
-				/// Field `ei_osabi`: OpenBSD.
-				pub const EI_OSABI_OPENBSD: u8 = 0x0c;
+						/// OpenBSD.
+						EI_OSABI_OPENBSD : "OpenBSD" = 0x0c,
 
-				/// Field `ei_osabi`: OpenVMS.
-				pub const EI_OSABI_OPENVMS: u8 = 0x0d;
+						/// OpenVMS.
+						EI_OSABI_OPENVMS : "OpenVMS" = 0x0d,
 
-				/// Field `ei_osabi`: NonStop Kernel.
-				pub const EI_OSABI_NONSTOPKERNEL: u8 = 0x0e;
+						/// NonStop Kernel.
+						EI_OSABI_NONSTOPKERNEL : "NonStop Kernel" = 0x0e,
 
-				/// Field `ei_osabi`: AROS.
-				pub const EI_OSABI_AROS: u8 = 0x0f;
+						/// AROS.
+						EI_OSABI_AROS : "AROS" = 0x0f,
 
-				/// Field `ei_osabi`: Fenix OS.
-				pub const EI_OSABI_FENIXOS: u8 = 0x10;
+						/// Fenix OS.
+						EI_OSABI_FENIXOS : "Fenix OS" = 0x10,
 
-				/// Field `ei_osabi`: CloudABI.
-				pub const EI_OSABI_CLOUDABI: u8 = 0x11;
+						/// CloudABI.
+						EI_OSABI_CLOUDABI : "CloudABI" = 0x11,
 
-				/// Field `ei_osabi`: Stratus Technologies OpenVOS.
-				pub const EI_OSABI_OPENVOS: u8 = 0x12;
+						/// Stratus Technologies OpenVOS.
+						EI_OSABI_OPENVOS : "Stratus Technologies OpenVOS" = 0x12,
+					}
+				}
 			}
 		}
 
 		pub mod typ {
-			/// Field `e_type`: ET_NONE.
-			pub const E_TYPE_ET_NONE: u16 = 0x0000;
+			def_consts! {
+				e_type : u16 : e_type_as_str => {
+					/// ET_NONE.
+					E_TYPE_ET_NONE : "ET_NONE" = 0x0000,
 
-			/// Field `e_type`: ET_REL.
-			pub const E_TYPE_ET_REL: u16 = 0x0001;
+					/// ET_REL.
+					E_TYPE_ET_REL : "ET_REL" = 0x0001,
 
-			/// Field `e_type`: ET_EXEC.
-			pub const E_TYPE_ET_EXEC: u16 = 0x0002;
+					/// ET_EXEC.
+					E_TYPE_ET_EXEC : "ET_EXEC" = 0x0002,
 
-			/// Field `e_type`: ET_DYN.
-			pub const E_TYPE_ET_DYN: u16 = 0x0003;
+					/// ET_DYN.
+					E_TYPE_ET_DYN : "ET_DYN" = 0x0003,
 
-			/// Field `e_type`: ET_CORE.
-			pub const E_TYPE_ET_CORE: u16 = 0x0004;
+					/// ET_CORE.
+					E_TYPE_ET_CORE : "ET_CORE" = 0x0004,
 
-			/// Field `e_type`: ET_LOOS.
-			pub const E_TYPE_ET_LOOS: u16 = 0xfe00;
+					/// ET_LOOS.
+					E_TYPE_ET_LOOS : "ET_LOOS" = 0xfe00,
 
-			/// Field `e_type`: ET_HIOS.
-			pub const E_TYPE_ET_HIOS: u16 = 0xfeff;
+					/// ET_HIOS.
+					E_TYPE_ET_HIOS : "ET_HIOS" = 0xfeff,
 
-			/// Field `e_type`: ET_LOPROC.
-			pub const E_TYPE_ET_LOPROC: u16 = 0xff00;
+					/// ET_LOPROC.
+					E_TYPE_ET_LOPROC : "ET_LOPROC" = 0xff00,
 
-			/// Field `e_type`: ET_HIPROC.
-			pub const E_TYPE_ET_HIPROC: u16 = 0xffff;
+					/// ET_HIPROC.
+					E_TYPE_ET_HIPROC : "ET_HIPROC" = 0xffff,
+				}
+			}
 		}
 
 		pub mod machine {
-			/// Field `e_machine`: Unspecified.
-			pub const E_MACHINE_UNSPECIFIED: u16 = 0x0000;
+			def_consts! {
+				e_machine : u16 : e_machine_as_str => {
+					/// Unspecified.
+					E_MACHINE_UNSPECIFIED : "Unspecified" = 0x0000,
 
-			/// Field `e_machine`: AT&T WE 32100.
-			pub const E_MACHINE_ATTWE32100: u16 = 0x0001;
+					/// AT&T WE 32100.
+					E_MACHINE_ATTWE32100 : "AT&T WE 32100" = 0x0001,
 
-			/// Field `e_machine`: SPARC.
-			pub const E_MACHINE_SPARC: u16 = 0x0002;
+					/// SPARC.
+					E_MACHINE_SPARC : "SPARC" = 0x0002,
 
-			/// Field `e_machine`: x86.
-			pub const E_MACHINE_X86: u16 = 0x0003;
+					/// x86.
+					E_MACHINE_X86 : "x86" = 0x0003,
 
-			/// Field `e_machine`: Motorola 68000 (M68k).
-			pub const E_MACHINE_MOTOROLA68000: u16 = 0x0004;
+					/// Motorola 68000 (M68k).
+					E_MACHINE_MOTOROLA68000 : "Motorola 68000 (M68k)" = 0x0004,
 
-			/// Field `e_machine`: Motorola 88000 (M88k).
-			pub const E_MACHINE_MOTOROLA88000: u16 = 0x0005;
+					/// Motorola 88000 (M88k).
+					E_MACHINE_MOTOROLA88000 : "Motorola 88000 (M88k)" = 0x0005,
 
-			/// Field `e_machine`: Intel MCU.
-			pub const E_MACHINE_INTELMCU: u16 = 0x0006;
+					/// Intel MCU.
+					E_MACHINE_INTELMCU : "Intel MCU" = 0x0006,
 
-			/// Field `e_machine`: Intel 80860.
-			pub const E_MACHINE_INTEL80860: u16 = 0x0007;
+					/// Intel 80860.
+					E_MACHINE_INTEL80860 : "Intel 80860" = 0x0007,
 
-			/// Field `e_machine`: MIPS.
-			pub const E_MACHINE_MIPS: u16 = 0x0008;
+					/// MIPS.
+					E_MACHINE_MIPS : "MIPS" = 0x0008,
 
-			/// Field `e_machine`: IBM System/370.
-			pub const E_MACHINE_IBM370: u16 = 0x0009;
+					/// IBM System/370.
+					E_MACHINE_IBM370 : "IBM System/370" = 0x0009,
 
-			/// Field `e_machine`: MIPS RS3000 Little-endian.
-			pub const E_MACHINE_MIPSRS3000LE: u16 = 0x000a;
+					/// MIPS RS3000 Little-endian.
+					E_MACHINE_MIPSRS3000LE : "MIPS RS3000 Little-endian" = 0x000a,
 
-			/// Field `e_machine`: Hewlett-Packard PA-RISC.
-			pub const E_MACHINE_HPPARISC: u16 = 0x000e;
+					/// Hewlett-Packard PA-RISC.
+					E_MACHINE_HPPARISC : "Hewlett-Packard PA-RISC" = 0x000e,
 
-			/// Field `e_machine`: Intel 80960.
-			pub const E_MACHINE_INTEL80960: u16 = 0x0013;
+					/// Intel 80960.
+					E_MACHINE_INTEL80960 : "Intel 80960" = 0x0013,
 
-			/// Field `e_machine`: PowerPC.
-			pub const E_MACHINE_POWERPC: u16 = 0x0014;
+					/// PowerPC.
+					E_MACHINE_POWERPC : "PowerPC" = 0x0014,
 
-			/// Field `e_machine`: PowerPC (64-bit).
-			pub const E_MACHINE_POWERPC64: u16 = 0x0015;
+					/// PowerPC (64-bit).
+					E_MACHINE_POWERPC64 : "PowerPC (64-bit)" = 0x0015,
 
-			/// Field `e_machine`: S390, including S390x.
-			pub const E_MACHINE_S390: u16 = 0x0016;
+					/// S390, including S390x.
+					E_MACHINE_S390 : "S390, including S390x" = 0x0016,
 
-			/// Field `e_machine`: IBM SPU/SPC.
-			pub const E_MACHINE_IBMSPUSPC: u16 = 0x0017;
+					/// IBM SPU/SPC.
+					E_MACHINE_IBMSPUSPC : "IBM SPU/SPC" = 0x0017,
 
-			/// Field `e_machine`: NEC V800.
-			pub const E_MACHINE_NECV800: u16 = 0x0024;
+					/// NEC V800.
+					E_MACHINE_NECV800 : "NEC V800" = 0x0024,
 
-			/// Field `e_machine`: Fujitsu FR20.
-			pub const E_MACHINE_FUJITSUFR20: u16 = 0x0025;
+					/// Fujitsu FR20.
+					E_MACHINE_FUJITSUFR20 : "Fujitsu FR20" = 0x0025,
 
-			/// Field `e_machine`: TRW RH-32.
-			pub const E_MACHINE_TRWRH32: u16 = 0x0026;
+					/// TRW RH-32.
+					E_MACHINE_TRWRH32 : "TRW RH-32" = 0x0026,
 
-			/// Field `e_machine`: Motorola RCE.
-			pub const E_MACHINE_MOTOROLARCE: u16 = 0x0027;
+					/// Motorola RCE.
+					E_MACHINE_MOTOROLARCE : "Motorola RCE" = 0x0027,
 
-			/// Field `e_machine`: ARM (up to ARMv7/Aarch32).
-			pub const E_MACHINE_ARM: u16 = 0x0028;
+					/// ARM (up to ARMv7/Aarch32).
+					E_MACHINE_ARM : "ARM (up to ARMv7/Aarch32)" = 0x0028,
 
-			/// Field `e_machine`: Digital Alpha.
-			pub const E_MACHINE_DIGITALALPHA: u16 = 0x0029;
+					/// Digital Alpha.
+					E_MACHINE_DIGITALALPHA : "Digital Alpha" = 0x0029,
 
-			/// Field `e_machine`: SuperH.
-			pub const E_MACHINE_SUPERH: u16 = 0x002a;
+					/// SuperH.
+					E_MACHINE_SUPERH : "SuperH" = 0x002a,
 
-			/// Field `e_machine`: SPARC Version 9.
-			pub const E_MACHINE_SPARC9: u16 = 0x002b;
+					/// SPARC Version 9.
+					E_MACHINE_SPARC9 : "SPARC Version 9" = 0x002b,
 
-			/// Field `e_machine`: Siemens TriCore embedded processor.
-			pub const E_MACHINE_SIEMENSTRICORE: u16 = 0x002c;
+					/// Siemens TriCore embedded processor.
+					E_MACHINE_SIEMENSTRICORE : "Siemens TriCore embedded processor" = 0x002c,
 
-			/// Field `e_machine`: Argonaut RISC Core.
-			pub const E_MACHINE_ARGONAUTRISCCORE: u16 = 0x002d;
+					/// Argonaut RISC Core.
+					E_MACHINE_ARGONAUTRISCCORE : "Argonaut RISC Core" = 0x002d,
 
-			/// Field `e_machine`: Hitachi H8/300.
-			pub const E_MACHINE_HITACHIH8300: u16 = 0x002e;
+					/// Hitachi H8/300.
+					E_MACHINE_HITACHIH8300 : "Hitachi H8/300" = 0x002e,
 
-			/// Field `e_machine`: Hitachi H8/300H.
-			pub const E_MACHINE_HITACHIH8300H: u16 = 0x002f;
+					/// Hitachi H8/300H.
+					E_MACHINE_HITACHIH8300H : "Hitachi H8/300H" = 0x002f,
 
-			/// Field `e_machine`: Hitachi H8S.
-			pub const E_MACHINE_HITACHIH8S: u16 = 0x0030;
+					/// Hitachi H8S.
+					E_MACHINE_HITACHIH8S : "Hitachi H8S" = 0x0030,
 
-			/// Field `e_machine`: Hitachi H8/500.
-			pub const E_MACHINE_HITACHIH8500: u16 = 0x0031;
+					/// Hitachi H8/500.
+					E_MACHINE_HITACHIH8500 : "Hitachi H8/500" = 0x0031,
 
-			/// Field `e_machine`: IA-64.
-			pub const E_MACHINE_IA64: u16 = 0x0032;
+					/// IA-64.
+					E_MACHINE_IA64 : "IA-64" = 0x0032,
 
-			/// Field `e_machine`: Stanford MIPS-X.
-			pub const E_MACHINE_STANFORDMIPSX: u16 = 0x0033;
+					/// Stanford MIPS-X.
+					E_MACHINE_STANFORDMIPSX : "Stanford MIPS-X" = 0x0033,
 
-			/// Field `e_machine`: Motorola ColdFire.
-			pub const E_MACHINE_MOTOROLACOLDFIRE: u16 = 0x0034;
+					/// Motorola ColdFire.
+					E_MACHINE_MOTOROLACOLDFIRE : "Motorola ColdFire" = 0x0034,
 
-			/// Field `e_machine`: Motorola M68HC12.
-			pub const E_MACHINE_MOTOROLAM68HC12: u16 = 0x0035;
+					/// Motorola M68HC12.
+					E_MACHINE_MOTOROLAM68HC12 : "Motorola M68HC12" = 0x0035,
 
-			/// Field `e_machine`: Fujitsu MMA Multimedia Accelerator.
-			pub const E_MACHINE_FUJITSUMMA: u16 = 0x0036;
+					/// Fujitsu MMA Multimedia Accelerator.
+					E_MACHINE_FUJITSUMMA : "Fujitsu MMA Multimedia Accelerator" = 0x0036,
 
-			/// Field `e_machine`: Siemens PCP.
-			pub const E_MACHINE_SIEMENSPCP: u16 = 0x0037;
+					/// Siemens PCP.
+					E_MACHINE_SIEMENSPCP : "Siemens PCP" = 0x0037,
 
-			/// Field `e_machine`: Sony nCPU embedded RISC processor.
-			pub const E_MACHINE_SONYNCPURISC: u16 = 0x0038;
+					/// Sony nCPU embedded RISC processor.
+					E_MACHINE_SONYNCPURISC : "Sony nCPU embedded RISC processor" = 0x0038,
 
-			/// Field `e_machine`: Denso NDR1 microprocessor.
-			pub const E_MACHINE_DENSONDR1: u16 = 0x0039;
+					/// Denso NDR1 microprocessor.
+					E_MACHINE_DENSONDR1 : "Denso NDR1 microprocessor" = 0x0039,
 
-			/// Field `e_machine`: Motorola Star*Core processor.
-			pub const E_MACHINE_MOTOROLASTARCORE: u16 = 0x003a;
+					/// Motorola Star*Core processor.
+					E_MACHINE_MOTOROLASTARCORE : "Motorola Star*Core processor" = 0x003a,
 
-			/// Field `e_machine`: Toyota ME16 processor.
-			pub const E_MACHINE_TOYOTAME16: u16 = 0x003b;
+					/// Toyota ME16 processor.
+					E_MACHINE_TOYOTAME16 : "Toyota ME16 processor" = 0x003b,
 
-			/// Field `e_machine`: STMicroelectronics ST100 processor.
-			pub const E_MACHINE_STMST100: u16 = 0x003c;
+					/// STMicroelectronics ST100 processor.
+					E_MACHINE_STMST100 : "STMicroelectronics ST100 processor" = 0x003c,
 
-			/// Field `e_machine`: Advanced Logic Corp. Tinyj embedded processor family.
-			pub const E_MACHINE_ALCTINYJ: u16 = 0x003d;
+					/// Advanced Logic Corp. Tinyj embedded processor family.
+					E_MACHINE_ALCTINYJ : "Advanced Logic Corp. Tinyj embedded processor family" = 0x003d,
 
-			/// Field `e_machine`: AMD x86-64.
-			pub const E_MACHINE_AMD8664: u16 = 0x003e;
+					/// AMD x86-64.
+					E_MACHINE_AMD8664 : "AMD x86-64" = 0x003e,
 
-			/// Field `e_machine`: TMS320C6000 Family.
-			pub const E_MACHINE_TMS320C6000: u16 = 0x008c;
+					/// TMS320C6000 Family.
+					E_MACHINE_TMS320C6000 : "TMS320C6000 Family" = 0x008c,
 
-			/// Field `e_machine`: MCST Elbrus e2k.
-			pub const E_MACHINE_MCSTELBRUSE2K: u16 = 0x00af;
+					/// MCST Elbrus e2k.
+					E_MACHINE_MCSTELBRUSE2K : "MCST Elbrus e2k" = 0x00af,
 
-			/// Field `e_machine`: ARM 64-bits (ARMv8/Aarch64).
-			pub const E_MACHINE_ARM64: u16 = 0x00b7;
+					/// ARM 64-bits (ARMv8/Aarch64).
+					E_MACHINE_ARM64 : "ARM 64-bits (ARMv8/Aarch64)" = 0x00b7,
 
-			/// Field `e_machine`: RISC-V.
-			pub const E_MACHINE_RISCV: u16 = 0x00f3;
+					/// RISC-V.
+					E_MACHINE_RISCV : "RISC-V" = 0x00f3,
 
-			/// Field `e_machine`: Berkeley Packet Filter.
-			pub const E_MACHINE_BPF: u16 = 0x00f7;
+					/// Berkeley Packet Filter.
+					E_MACHINE_BPF : "Berkeley Packet Filter" = 0x00f7,
 
-			/// Field `e_machine`: WDC 65C816.
-			pub const E_MACHINE_WDC65C816: u16 = 0x0101;
-		}
-	}
-
-	mod stringify {
-		#[rustfmt::skip]
-		pub fn ei_class_as_str(ei_class: u8) -> &'static str {
-			match ei_class {
-				crate::header::consts::ident::class::EI_CLASS_32 => "32-bit",
-				crate::header::consts::ident::class::EI_CLASS_64 => "64-bit",
-				_ => "UNKNOWN",
-			}
-		}
-
-		#[rustfmt::skip]
-		pub fn ei_data_as_str(ei_data: u8) -> &'static str {
-			match ei_data {
-				crate::header::consts::ident::data::EI_DATA_LE => "little-endian",
-				crate::header::consts::ident::data::EI_DATA_BE => "big-endian",
-				_ => "UNKNOWN",
-			}
-		}
-
-		#[rustfmt::skip]
-		pub fn ei_osabi_as_str(ei_osabi: u8) -> &'static str {
-			match ei_osabi {
-				crate::header::consts::ident::osabi::EI_OSABI_SYSTEMV => "System V",
-				crate::header::consts::ident::osabi::EI_OSABI_HPUX => "HP-UX",
-				crate::header::consts::ident::osabi::EI_OSABI_NETBSD => "NetBSD",
-				crate::header::consts::ident::osabi::EI_OSABI_LINUX => "Linux",
-				crate::header::consts::ident::osabi::EI_OSABI_GNUHURD => "GNU Hurd",
-				crate::header::consts::ident::osabi::EI_OSABI_SOLARIS => "Solaris",
-				crate::header::consts::ident::osabi::EI_OSABI_AIX => "AIX",
-				crate::header::consts::ident::osabi::EI_OSABI_IRIX => "IRIX",
-				crate::header::consts::ident::osabi::EI_OSABI_FREEBSD => "FreeBSD",
-				crate::header::consts::ident::osabi::EI_OSABI_TRU64 => "Tru64",
-				crate::header::consts::ident::osabi::EI_OSABI_NOVELLMODESTO => "Novell Modesto",
-				crate::header::consts::ident::osabi::EI_OSABI_OPENBSD => "OpenBSD",
-				crate::header::consts::ident::osabi::EI_OSABI_OPENVMS => "OpenVMS",
-				crate::header::consts::ident::osabi::EI_OSABI_NONSTOPKERNEL => "NonStop Kernel",
-				crate::header::consts::ident::osabi::EI_OSABI_AROS => "AROS",
-				crate::header::consts::ident::osabi::EI_OSABI_FENIXOS => "Fenix OS",
-				crate::header::consts::ident::osabi::EI_OSABI_CLOUDABI => "CloudABI",
-				crate::header::consts::ident::osabi::EI_OSABI_OPENVOS => "Stratus Technologies OpenVOS",
-				_ => "UNKNOWN",
-			}
-		}
-
-		#[rustfmt::skip]
-		pub fn e_type_as_str(e_type: u16) -> &'static str {
-			match e_type {
-				crate::header::consts::typ::E_TYPE_ET_NONE => "ET_NONE",
-				crate::header::consts::typ::E_TYPE_ET_REL => "ET_REL",
-				crate::header::consts::typ::E_TYPE_ET_EXEC => "ET_EXEC",
-				crate::header::consts::typ::E_TYPE_ET_DYN => "ET_DYN",
-				crate::header::consts::typ::E_TYPE_ET_CORE => "ET_CORE",
-				crate::header::consts::typ::E_TYPE_ET_LOOS => "ET_LOOS",
-				crate::header::consts::typ::E_TYPE_ET_HIOS => "ET_HIOS",
-				crate::header::consts::typ::E_TYPE_ET_LOPROC => "ET_LOPROC",
-				crate::header::consts::typ::E_TYPE_ET_HIPROC => "ET_HIPROC",
-				_ => "UNKNOWN",
-			}
-		}
-
-		// TODO: replace with macro?
-		#[rustfmt::skip]
-		pub fn e_machine_as_str(e_machine: u16) -> &'static str {
-			match e_machine {
-				crate::header::consts::machine::E_MACHINE_UNSPECIFIED => "Unspecified",
-				crate::header::consts::machine::E_MACHINE_ATTWE32100 => "AT&T WE 32100",
-				crate::header::consts::machine::E_MACHINE_SPARC => "SPARC",
-				crate::header::consts::machine::E_MACHINE_X86 => "x86",
-				crate::header::consts::machine::E_MACHINE_MOTOROLA68000 => "Motorola 68000 (M68k)",
-				crate::header::consts::machine::E_MACHINE_MOTOROLA88000 => "Motorola 88000 (M88k)",
-				crate::header::consts::machine::E_MACHINE_INTELMCU => "Intel MCU",
-				crate::header::consts::machine::E_MACHINE_INTEL80860 => "Intel 80860",
-				crate::header::consts::machine::E_MACHINE_MIPS => "MIPS",
-				crate::header::consts::machine::E_MACHINE_IBM370 => "IBM System/370",
-				crate::header::consts::machine::E_MACHINE_MIPSRS3000LE => "MIPS RS3000 Little-endian",
-				crate::header::consts::machine::E_MACHINE_HPPARISC => "Hewlett-Packard PA-RISC",
-				crate::header::consts::machine::E_MACHINE_INTEL80960 => "Intel 80960",
-				crate::header::consts::machine::E_MACHINE_POWERPC => "PowerPC",
-				crate::header::consts::machine::E_MACHINE_POWERPC64 => "PowerPC (64-bit)",
-				crate::header::consts::machine::E_MACHINE_S390 => "S390, including S390x",
-				crate::header::consts::machine::E_MACHINE_IBMSPUSPC => "IBM SPU/SPC",
-				crate::header::consts::machine::E_MACHINE_NECV800 => "NEC V800",
-				crate::header::consts::machine::E_MACHINE_FUJITSUFR20 => "Fujitsu FR20",
-				crate::header::consts::machine::E_MACHINE_TRWRH32 => "TRW RH-32",
-				crate::header::consts::machine::E_MACHINE_MOTOROLARCE => "Motorola RCE",
-				crate::header::consts::machine::E_MACHINE_ARM => "ARM (up to ARMv7/Aarch32)",
-				crate::header::consts::machine::E_MACHINE_DIGITALALPHA => "Digital Alpha",
-				crate::header::consts::machine::E_MACHINE_SUPERH => "SuperH",
-				crate::header::consts::machine::E_MACHINE_SPARC9 => "SPARC Version 9",
-				crate::header::consts::machine::E_MACHINE_SIEMENSTRICORE => "Siemens TriCore embedded processor",
-				crate::header::consts::machine::E_MACHINE_ARGONAUTRISCCORE => "Argonaut RISC Core",
-				crate::header::consts::machine::E_MACHINE_HITACHIH8300 => "Hitachi H8/300",
-				crate::header::consts::machine::E_MACHINE_HITACHIH8300H => "Hitachi H8/300H",
-				crate::header::consts::machine::E_MACHINE_HITACHIH8S => "Hitachi H8S",
-				crate::header::consts::machine::E_MACHINE_HITACHIH8500 => "Hitachi H8/500",
-				crate::header::consts::machine::E_MACHINE_IA64 => "IA-64",
-				crate::header::consts::machine::E_MACHINE_STANFORDMIPSX => "Stanford MIPS-X",
-				crate::header::consts::machine::E_MACHINE_MOTOROLACOLDFIRE => "Motorola ColdFire",
-				crate::header::consts::machine::E_MACHINE_MOTOROLAM68HC12 => "Motorola M68HC12",
-				crate::header::consts::machine::E_MACHINE_FUJITSUMMA => "Fujitsu MMA Multimedia Accelerator",
-				crate::header::consts::machine::E_MACHINE_SIEMENSPCP => "Siemens PCP",
-				crate::header::consts::machine::E_MACHINE_SONYNCPURISC => "Sony nCPU embedded RISC processor",
-				crate::header::consts::machine::E_MACHINE_DENSONDR1 => "Denso NDR1 microprocessor",
-				crate::header::consts::machine::E_MACHINE_MOTOROLASTARCORE => "Motorola Star*Core processor",
-				crate::header::consts::machine::E_MACHINE_TOYOTAME16 => "Toyota ME16 processor",
-				crate::header::consts::machine::E_MACHINE_STMST100 => "STMicroelectronics ST100 processor",
-				crate::header::consts::machine::E_MACHINE_ALCTINYJ => "Advanced Logic Corp. Tinyj embedded processor family",
-				crate::header::consts::machine::E_MACHINE_AMD8664 => "AMD x86-64",
-				crate::header::consts::machine::E_MACHINE_TMS320C6000 => "TMS320C6000 Family",
-				crate::header::consts::machine::E_MACHINE_MCSTELBRUSE2K => "MCST Elbrus e2k",
-				crate::header::consts::machine::E_MACHINE_ARM64 => "ARM 64-bits (ARMv8/Aarch64)",
-				crate::header::consts::machine::E_MACHINE_RISCV => "RISC-V",
-				crate::header::consts::machine::E_MACHINE_BPF => "Berkeley Packet Filter",
-				crate::header::consts::machine::E_MACHINE_WDC65C816 => "WDC 65C816",
-				_ => "UNKNOWN",
+					/// WDC 65C816.
+					E_MACHINE_WDC65C816 : "WDC 65C816" = 0x0101,
+				}
 			}
 		}
 	}
@@ -530,10 +463,10 @@ pub mod header {
 	ei_version   : {}
 	ei_osabi     : {}
 	ei_abiversion: {}"#,
-				crate::header::stringify::ei_class_as_str(self.ei_class()),
-				crate::header::stringify::ei_data_as_str(self.ei_data()),
+				crate::header::consts::ident::class::ei_class_as_str(self.ei_class()),
+				crate::header::consts::ident::data::ei_data_as_str(self.ei_data()),
 				self.ei_version(),
-				crate::header::stringify::ei_osabi_as_str(self.ei_osabi()),
+				crate::header::consts::ident::osabi::ei_osabi_as_str(self.ei_osabi()),
 				self.ei_abiversion()
 			))
 		}
@@ -702,13 +635,13 @@ pub mod header {
 	e_shentsize: {}
 	e_shnum    : {}
 	e_shstrndx : {}"#,
-						crate::header::stringify::ei_class_as_str(self.e_ident.ei_class()),
-						crate::header::stringify::ei_data_as_str(self.e_ident.ei_data()),
+						crate::header::consts::ident::class::ei_class_as_str(self.e_ident.ei_class()),
+						crate::header::consts::ident::data::ei_data_as_str(self.e_ident.ei_data()),
 						self.e_ident.ei_version(),
-						crate::header::stringify::ei_osabi_as_str(self.e_ident.ei_osabi()),
+						crate::header::consts::ident::osabi::ei_osabi_as_str(self.e_ident.ei_osabi()),
 						self.e_ident.ei_abiversion(),
-						crate::header::stringify::e_type_as_str(self.e_type),
-						crate::header::stringify::e_machine_as_str(self.e_machine),
+						crate::header::consts::typ::e_type_as_str(self.e_type),
+						crate::header::consts::machine::e_machine_as_str(self.e_machine),
 						self.e_version,
 						self.e_entry,
 						self.e_phoff,
