@@ -797,7 +797,7 @@ pub mod program_header {
 		}
 
 		impl ProgramHeader {
-			#[allow(unused_assignments)]
+			#[allow(unused_assignments, clippy::eval_order_dependence)]
 			pub fn from_bytes(
 				endianness: u8,
 				mut bytes: &[u8],
@@ -881,7 +881,7 @@ pub mod program_header {
 		}
 
 		impl ProgramHeader {
-			#[allow(unused_assignments)]
+			#[allow(unused_assignments, clippy::eval_order_dependence)]
 			pub fn from_bytes(
 				endianness: u8,
 				mut bytes: &[u8],
