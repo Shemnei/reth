@@ -639,7 +639,6 @@ pub mod header {
 				}
 			}
 
-			// TODO: impl display
 			impl core::fmt::Display for Header {
 				fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
 					f.write_fmt(format_args!(r#"Header:
@@ -682,7 +681,6 @@ pub mod header {
 						self.e_shstrndx,
 						size = core::mem::size_of::<$size>() * 2,
 					))
-
 				}
 			}
 		};
@@ -759,6 +757,12 @@ pub mod program_header {
 		}
 	}
 
+	/// # Note
+	///
+	/// There is no simple way to generate the headers for this module via a macro
+	/// as the field `p_flags` has a different position depending on the bitness
+	/// of the elf.
+
 	pub mod elf32 {
 		use core::fmt;
 
@@ -768,32 +772,32 @@ pub mod program_header {
 		#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 		pub struct ProgramHeader {
 			/// Field `p_type`: Identifies the type of the segment.
-			p_type: u32,
+			pub p_type: u32,
 
 			/// Field `p_offset`: Offset of the segment in the file image.
-			p_offset: u32,
+			pub p_offset: u32,
 
 			/// Field `p_vaddr`: Virtual address of the segment in memory.
-			p_vaddr: u32,
+			pub p_vaddr: u32,
 
 			/// Field `p_paddr`: On systems where physical address is relevant, reserved for segment's physical address.
-			p_paddr: u32,
+			pub p_paddr: u32,
 
 			/// Field `p_filesz`: Size in bytes of the segment in the file image (may be 0).
-			p_filesz: u32,
+			pub p_filesz: u32,
 
 			/// Field `p_memsz`: Size in bytes of the segment in memory (may be 0).
-			p_memsz: u32,
+			pub p_memsz: u32,
 
 			/// Field `p_flags`: Segment-dependent flags.
-			p_flags: u32,
+			pub p_flags: u32,
 
 			/// Field `p_align`: Specifies alignment.
 			///
 			/// `0` and `1` specify no alignment. Otherwise should be a positive,
 			/// integral power of `2` with `p_vaddr` equating `p_offset` modulus
 			/// `p_align`.
-			p_align: u32,
+			pub p_align: u32,
 		}
 
 		impl ProgramHeader {
@@ -828,8 +832,7 @@ pub mod program_header {
 	p_filesz: {}
 	p_memsz : {}
 	p_flags : 0b{:032b}
-	p_align : {}
-	"#,
+	p_align : {}"#,
 					crate::program_header::consts::typ::p_type_as_str(self.p_type),
 					self.p_flags,
 					self.p_offset,
@@ -852,32 +855,32 @@ pub mod program_header {
 		#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 		pub struct ProgramHeader {
 			/// Field `p_type`: Identifies the type of the segment.
-			p_type: u32,
+			pub p_type: u32,
 
 			/// Field `p_flags`: Segment-dependent flags.
-			p_flags: u32,
+			pub p_flags: u32,
 
 			/// Field `p_offset`: Offset of the segment in the file image.
-			p_offset: u64,
+			pub p_offset: u64,
 
 			/// Field `p_vaddr`: Virtual address of the segment in memory.
-			p_vaddr: u64,
+			pub p_vaddr: u64,
 
 			/// Field `p_paddr`: On systems where physical address is relevant, reserved for segment's physical address.
-			p_paddr: u64,
+			pub p_paddr: u64,
 
 			/// Field `p_filesz`: Size in bytes of the segment in the file image (may be 0).
-			p_filesz: u64,
+			pub p_filesz: u64,
 
 			/// Field `p_memsz`: Size in bytes of the segment in memory (may be 0).
-			p_memsz: u64,
+			pub p_memsz: u64,
 
 			/// Field `p_align`: Specifies alignment.
 			///
 			/// `0` and `1` specify no alignment. Otherwise should be a positive,
 			/// integral power of `2` with `p_vaddr` equating `p_offset` modulus
 			/// `p_align`.
-			p_align: u64,
+			pub p_align: u64,
 		}
 
 		impl ProgramHeader {
@@ -912,8 +915,7 @@ pub mod program_header {
 	p_paddr : 0x{:016x}
 	p_filesz: {}
 	p_memsz : {}
-	p_align : {}
-	"#,
+	p_align : {}"#,
 					crate::program_header::consts::typ::p_type_as_str(self.p_type),
 					self.p_flags,
 					self.p_offset,
@@ -925,5 +927,238 @@ pub mod program_header {
 				))
 			}
 		}
+	}
+}
+
+pub mod section_header {
+	pub mod consts {
+		pub mod typ {
+			crate::util::def_consts! {
+				sh_type : u32 : sh_type_as_str => {
+					/// Section header table entry unused.
+					SH_TYPE_SHT_NULL: "SHT_NULL" = 0x00000000,
+
+					/// Program data.
+					SH_TYPE_SHT_PROGBITS: "SHT_PROGBITS" = 0x00000001,
+
+					/// Symbol table.
+					SH_TYPE_SHT_SYMTAB: "SHT_SYMTAB" = 0x00000002,
+
+					/// String table.
+					SH_TYPE_SHT_STRTAB: "SHT_STRTAB" = 0x00000003,
+
+					/// Relocation entries with addends.
+					SH_TYPE_SHT_RELA: "SHT_RELA" = 0x00000004,
+
+					/// Symbol hash table.
+					SH_TYPE_SHT_HASH: "SHT_HASH" = 0x00000005,
+
+					/// Dynamic linking information.
+					SH_TYPE_SHT_DYNAMIC: "SHT_DYNAMIC" = 0x00000006,
+
+					/// Notes.
+					SH_TYPE_SHT_NOTE: "SHT_NOTE" = 0x00000007,
+
+					/// Program space with no data (bss).
+					SH_TYPE_SHT_NOBITS: "SHT_NOBITS" = 0x00000008,
+
+					/// Relocation entries, no addends.
+					SH_TYPE_SHT_REL: "SHT_REL" = 0x00000009,
+
+					/// Reserved.
+					SH_TYPE_SHT_SHLIB: "SHT_SHLIB" = 0x0000000a,
+
+					/// Dynamic linker symbol table.
+					SH_TYPE_SHT_DYNSYM: "SHT_DYNSYM" = 0x0000000b,
+
+					/// Array of constructors.
+					SH_TYPE_SHT_INIT_ARRAY: "SHT_INIT_ARRAY" = 0x0000000e,
+
+					/// Array of destructors.
+					SH_TYPE_SHT_FINI_ARRAY: "SHT_FINI_ARRAY" = 0x0000000f,
+
+					/// Array of pre-constructors.
+					SH_TYPE_SHT_PREINIT_ARRAY: "SHT_PREINIT_ARRAY" = 0x00000010,
+
+					/// Section group.
+					SH_TYPE_SHT_GROUP: "SHT_GROUP" = 0x00000011,
+
+					/// Extended section indices.
+					SH_TYPE_SHT_SYMTAB_SHNDX: "SHT_SYMTAB_SHNDX" = 0x00000012,
+
+					/// Number of defined types.
+					SH_TYPE_SHT_NUM: "SHT_NUM" = 0x00000013,
+				}, {
+					(0x60000000..) => "RESERVED: Operating system specific",
+				}
+			}
+		}
+
+		pub mod flags {
+			macro_rules! def_flags {
+				( $size:ty ) => {
+					/// Field `sh_flags`: Writable.
+					pub const SH_FLAG_SHF_WRITE: $size = 0x01;
+
+					/// Field `sh_flags`: Occupies memory during execution.
+					pub const SH_FLAG_SHF_ALLOC: $size = 0x02;
+
+					/// Field `sh_flags`: Executable.
+					pub const SH_FLAG_SHF_EXECINSTR: $size = 0x03;
+
+					/// Field `sh_flags`: Might be merged.
+					pub const SH_FLAG_SHF_MERGE: $size = 0x10;
+
+					/// Field `sh_flags`: Contains null-terminated strings.
+					pub const SH_FLAG_SHF_STRINGS: $size = 0x20;
+
+					/// Field `sh_flags`: `sh_info` contains SHT index.
+					pub const SH_FLAG_SHF_INFO_LINK: $size = 0x40;
+
+					/// Field `sh_flags`: Preserved order after combining.
+					pub const SH_FLAG_SHF_LINK_ORDER: $size = 0x80;
+
+					/// Field `sh_flags`: Non-standard OS specific handling required.
+					pub const SH_FLAG_SHF_OS_NONCONFORMING: $size = 0x100;
+
+					/// Field `sh_flags`: Section is member of a group.
+					pub const SH_FLAG_SHF_GROUP: $size = 0x200;
+
+					/// Field `sh_flags`: Section holds thread-local data.
+					pub const SH_FLAG_SHF_TLS: $size = 0x400;
+
+					/// Field `sh_flags`: OS-specific (mask).
+					pub const SH_FLAG_SHF_MASKOS: $size = 0x0ff0_0000;
+
+					/// Field `sh_flags`: Processor-specific (mask).
+					pub const SH_FLAG_SHF_MASKPROC: $size = 0xf000_0000;
+
+					/// Field `sh_flags`: Special ordering requirement (Solaris).
+					pub const SH_FLAG_SHF_ORDERED: $size = 0x400_0000;
+
+					/// Field `sh_flags`: Section is excluded unless referenced or allocated (Solaris).
+					pub const SH_FLAG_SHF_EXCLUDE: $size = 0x800_0000;
+				};
+			}
+
+			pub mod elf32 {
+				def_flags!(u32);
+			}
+
+			pub mod elf64 {
+				def_flags!(u64);
+			}
+		}
+	}
+
+	macro_rules! section_header {
+		( $size:ty ) => {
+			#[repr(C)]
+			#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+			pub struct SectionHeader {
+				/// Field `sh_name`: Offset to a string in the `.shstrtab`
+				/// section containing the name of the section.
+				pub sh_name: u32,
+
+				/// Field `sh_type`: Identifies the type of this header.
+				pub sh_type: u32,
+
+				/// Field `sh_flags`: Identifies the attributes of the section.
+				pub sh_flags: $size,
+
+				/// Field `sh_addr`: Virtual address of the section in memory,
+				/// for sections that are loaded.
+				pub sh_addr: $size,
+
+				/// Field `sh_offset`: Offset of the section in the file image.
+				pub sh_offset: $size,
+
+				/// Field `sh_size`: Size in bytes of the section in the file
+				/// image (may be 0).
+				pub sh_size: $size,
+
+				/// Field `sh_link`: Contains the section index of an associated
+				/// section.
+				///
+				/// This field has several purposes, depending on the
+				/// type of the section.
+				pub sh_link: u32,
+
+				/// Field `sh_info`: Contains extra information about the section.
+				///
+				/// This field has several purposes, depending on the
+				/// type of the section.
+				pub sh_info: u32,
+
+				/// Field `sh_addralign`: Contains the required alignment of the
+				/// section.
+				///
+				/// The field must be a power of `2`.
+				pub sh_addralign: $size,
+
+				/// Field `sh_entsize`: Size in bytes of each entry.
+				///
+				/// This is only used when the entries are of a fixed-size.
+				/// Otherwise the field contains `0`.
+				pub sh_entsize: $size,
+			}
+
+			impl SectionHeader {
+                #[allow(unused_assignments, clippy::eval_order_dependence)]
+				pub fn from_bytes(endianness: u8, mut bytes: &[u8]) -> crate::error::Result<Self> {
+					use crate::util::consume;
+
+                    Ok(Self {
+                        sh_name: consume!(bytes, endianness => u32)?,
+                        sh_type: consume!(bytes, endianness => u32)?,
+                        sh_flags: consume!(bytes, endianness => $size)?,
+                        sh_addr: consume!(bytes, endianness => $size)?,
+                        sh_offset: consume!(bytes, endianness => $size)?,
+                        sh_size: consume!(bytes, endianness => $size)?,
+                        sh_link: consume!(bytes, endianness => u32)?,
+                        sh_info: consume!(bytes, endianness => u32)?,
+                        sh_addralign: consume!(bytes, endianness => $size)?,
+                        sh_entsize: consume!(bytes, endianness => $size)?,
+                    })
+				}
+			}
+
+			impl core::fmt::Display for SectionHeader {
+				fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+					f.write_fmt(format_args!(r#"SectionHeader:
+	sh_name     : {}
+	sh_type     : {}
+	sh_flags    : 0b{:0size_bin$b}
+	sh_addr     : 0x{:0size_hex$x}
+	sh_offset   : {}
+	sh_size     : {}
+	sh_link     : {}
+	sh_info     : {}
+	sh_addralign: {}
+	sh_entsize  : {}"#,
+						self.sh_name,
+						crate::section_header::consts::typ::sh_type_as_str(self.sh_type),
+						self.sh_flags,
+						self.sh_addr,
+						self.sh_offset,
+						self.sh_size,
+						self.sh_link,
+						self.sh_info,
+						self.sh_addralign,
+						self.sh_entsize,
+						size_hex = core::mem::size_of::<$size>() * 2,
+						size_bin = core::mem::size_of::<$size>() * 8,
+					))
+				}
+			}
+		}
+	}
+
+	pub mod elf32 {
+		section_header!(u32);
+	}
+
+	pub mod elf64 {
+		section_header!(u64);
 	}
 }
