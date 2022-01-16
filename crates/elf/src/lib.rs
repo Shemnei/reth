@@ -60,9 +60,9 @@ mod util {
 	/// Exports macro for use in other modules of the crate.
 	pub(crate) use consume;
 
-	/// Defines a list on constants with some added doc comments and a convienient
-	/// function which converts a value of the shared `field/type` to a string
-	/// representation.
+	/// Defines a list on constants with some added doc comments and a
+	/// convienient function which converts a value of the shared `field/type`
+	/// to a string representation.
 	macro_rules! def_consts {
 		(
 			$field:ident : $size:ty : $as_str:ident => {
@@ -564,42 +564,50 @@ pub mod header {
 				/// Field `e_type`: Identifies object file type.
 				pub e_type: u16,
 
-				/// Field `e_machine`: Specifies a target instruction set architecture.
+				/// Field `e_machine`: Specifies a target instruction set
+				/// architecture.
 				pub e_machine: u16,
 
-				/// Field `e_version`: Specifies the version of elf (`1` for the original version).
+				/// Field `e_version`: Specifies the version of elf
+				/// (`1` for the original version).
 				pub e_version: u32,
 
 				/// Field `e_entry`: Memory address of the entry point.
 				pub e_entry: $size,
 
-				/// Field `e_phoff`: Points to the start of the program header table.
+				/// Field `e_phoff`: Points to the start of the program header
+				/// table.
 				pub e_phoff: $size,
 
-				/// Field `e_shoff`: Points to the start of the section header table.
+				/// Field `e_shoff`: Points to the start of the section header
+				/// table.
 				pub e_shoff: $size,
 
-				/// Field `e_flags`: Flags (interpretation of the field depends on the target
-				/// architecture).
+				/// Field `e_flags`: Flags (interpretation of the field depends
+				/// on the target architecture).
 				pub e_flags: u32,
 
 				/// Field `e_ehsize`: Contains the size of this [`Header`].
 				pub e_ehsize: u16,
 
-				/// Field `e_phentsize`: Contains the size of a program header table entry.
+				/// Field `e_phentsize`: Contains the size of a program header
+				/// table entry.
 				pub e_phentsize: u16,
 
-				/// Field `e_phnum`: Contains the number of entries in the program header table.
+				/// Field `e_phnum`: Contains the number of entries in the
+				/// program header table.
 				pub e_phnum: u16,
 
-				/// Field `e_shentsize`: Contains the size of a section header table entry.
+				/// Field `e_shentsize`: Contains the size of a section header
+				/// table entry.
 				pub e_shentsize: u16,
 
-				/// Field `e_shnum`: Contains the number of entries in the section header table.
+				/// Field `e_shnum`: Contains the number of entries in the
+				/// section header table.
 				pub e_shnum: u16,
 
-				/// Field `e_shstrndx`: Contains index of the section header table entry that
-				/// contains the section names.
+				/// Field `e_shstrndx`: Contains index of the section header
+				/// table entry that contains the section names.
 				pub e_shstrndx: u16,
 			}
 
@@ -759,9 +767,9 @@ pub mod program_header {
 
 	/// # Note
 	///
-	/// There is no simple way to generate the headers for this module via a macro
-	/// as the field `p_flags` has a different position depending on the bitness
-	/// of the elf.
+	/// There is no simple way to generate the headers for this module via a
+	/// macro as the field `p_flags` has a different position depending on the
+	/// bitness of the elf.
 
 	pub mod elf32 {
 		use core::fmt;
@@ -780,13 +788,16 @@ pub mod program_header {
 			/// Field `p_vaddr`: Virtual address of the segment in memory.
 			pub p_vaddr: u32,
 
-			/// Field `p_paddr`: On systems where physical address is relevant, reserved for segment's physical address.
+			/// Field `p_paddr`: On systems where physical address is relevant,
+			/// reserved for segment's physical address.
 			pub p_paddr: u32,
 
-			/// Field `p_filesz`: Size in bytes of the segment in the file image (may be 0).
+			/// Field `p_filesz`: Size in bytes of the segment in the file image
+			/// (may be 0).
 			pub p_filesz: u32,
 
-			/// Field `p_memsz`: Size in bytes of the segment in memory (may be 0).
+			/// Field `p_memsz`: Size in bytes of the segment in memory
+			/// (may be 0).
 			pub p_memsz: u32,
 
 			/// Field `p_flags`: Segment-dependent flags.
@@ -866,13 +877,16 @@ pub mod program_header {
 			/// Field `p_vaddr`: Virtual address of the segment in memory.
 			pub p_vaddr: u64,
 
-			/// Field `p_paddr`: On systems where physical address is relevant, reserved for segment's physical address.
+			/// Field `p_paddr`: On systems where physical address is relevant,
+			/// reserved for segment's physical address.
 			pub p_paddr: u64,
 
-			/// Field `p_filesz`: Size in bytes of the segment in the file image (may be 0).
+			/// Field `p_filesz`: Size in bytes of the segment in the file image
+			/// (may be 0).
 			pub p_filesz: u64,
 
-			/// Field `p_memsz`: Size in bytes of the segment in memory (may be 0).
+			/// Field `p_memsz`: Size in bytes of the segment in memory
+			/// (may be 0).
 			pub p_memsz: u64,
 
 			/// Field `p_align`: Specifies alignment.
@@ -1018,7 +1032,8 @@ pub mod section_header {
 					/// Field `sh_flags`: Preserved order after combining.
 					pub const SH_FLAG_SHF_LINK_ORDER: $size = 0x80;
 
-					/// Field `sh_flags`: Non-standard OS specific handling required.
+					/// Field `sh_flags`: Non-standard OS specific handling
+					/// required.
 					pub const SH_FLAG_SHF_OS_NONCONFORMING: $size = 0x100;
 
 					/// Field `sh_flags`: Section is member of a group.
@@ -1036,7 +1051,8 @@ pub mod section_header {
 					/// Field `sh_flags`: Special ordering requirement (Solaris).
 					pub const SH_FLAG_SHF_ORDERED: $size = 0x400_0000;
 
-					/// Field `sh_flags`: Section is excluded unless referenced or allocated (Solaris).
+					/// Field `sh_flags`: Section is excluded unless referenced
+					/// or allocated (Solaris).
 					pub const SH_FLAG_SHF_EXCLUDE: $size = 0x800_0000;
 				};
 			}
