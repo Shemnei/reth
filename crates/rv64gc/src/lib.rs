@@ -236,7 +236,7 @@ pub mod ins {
 		op: fn(cpu: &mut Cpu, word: u32) -> Result<(), Trap>,
 	}
 
-	pub const INSTRUCTIONS: [Instruction; 53] = [
+	pub const INSTRUCTIONS: [Instruction; 59] = [
 		// RV32I
 		Instruction {
 			//      imm                rd   op
@@ -855,6 +855,74 @@ pub mod ins {
 			reqd: 0b00000000000_0000_001_0000_0001111,
 			name: "FENCE.I",
 			extension: "Zifencei",
+			op: |cpu, word| {
+				// FormatI
+				Ok(())
+			},
+		},
+
+		// RV32/RV64 Zicsr
+		Instruction {
+			//      csr         rs1  fn3 rd   op
+			mask: 0b00000000000_0000_111_0000_1111111,
+			reqd: 0b00000000000_0000_001_0000_1110011,
+			name: "CSRRW",
+			extension: "Zicsr",
+			op: |cpu, word| {
+				// FormatI
+				Ok(())
+			},
+		},
+		Instruction {
+			//      csr         rs1  fn3 rd   op
+			mask: 0b00000000000_0000_111_0000_1111111,
+			reqd: 0b00000000000_0000_010_0000_1110011,
+			name: "CSRRS",
+			extension: "Zicsr",
+			op: |cpu, word| {
+				// FormatI
+				Ok(())
+			},
+		},
+		Instruction {
+			//      csr         rs1  fn3 rd   op
+			mask: 0b00000000000_0000_111_0000_1111111,
+			reqd: 0b00000000000_0000_011_0000_1110011,
+			name: "CSRRC",
+			extension: "Zicsr",
+			op: |cpu, word| {
+				// FormatI
+				Ok(())
+			},
+		},
+		Instruction {
+			//      csr         uimm  fn3 rd   op
+			mask: 0b00000000000_0000_111_0000_1111111,
+			reqd: 0b00000000000_0000_101_0000_1110011,
+			name: "CSRRWI",
+			extension: "Zicsr",
+			op: |cpu, word| {
+				// FormatI
+				Ok(())
+			},
+		},
+		Instruction {
+			//      csr         uimm  fn3 rd   op
+			mask: 0b00000000000_0000_111_0000_1111111,
+			reqd: 0b00000000000_0000_110_0000_1110011,
+			name: "CSRRSI",
+			extension: "Zicsr",
+			op: |cpu, word| {
+				// FormatI
+				Ok(())
+			},
+		},
+		Instruction {
+			//      csr         uimm  fn3 rd   op
+			mask: 0b00000000000_0000_111_0000_1111111,
+			reqd: 0b00000000000_0000_111_0000_1110011,
+			name: "CSRRCI",
+			extension: "Zicsr",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
