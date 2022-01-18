@@ -7,4 +7,7 @@ edition = "2021"
 [features]
 std = []
 
+[profile.release]
+incremental = true
+
 [dependencies]
