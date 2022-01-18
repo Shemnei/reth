@@ -236,7 +236,7 @@ pub mod ins {
 		op: fn(cpu: &mut Cpu, word: u32) -> Result<(), Trap>,
 	}
 
-	pub const INSTRUCTIONS: [Instruction; 52] = [
+	pub const INSTRUCTIONS: [Instruction; 53] = [
 		// RV32I
 		Instruction {
 			//      imm                rd   op
@@ -844,6 +844,19 @@ pub mod ins {
 			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatR
+				Ok(())
+			},
+		},
+
+		// RV32/RV64 Zifencei
+		Instruction {
+			//      imm         rs1  fn3 rd   op
+			mask: 0b00000000000_0000_111_0000_1111111,
+			reqd: 0b00000000000_0000_001_0000_0001111,
+			name: "FENCE.I",
+			extension: "Zifencei",
+			op: |cpu, word| {
+				// FormatI
 				Ok(())
 			},
 		},
