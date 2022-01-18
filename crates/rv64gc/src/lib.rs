@@ -232,6 +232,7 @@ pub mod ins {
 		mask: u32,
 		reqd: u32,
 		name: &'static str,
+		extension: &'static str,
 		op: fn(cpu: &mut Cpu, word: u32) -> Result<(), Trap>,
 	}
 
@@ -242,6 +243,7 @@ pub mod ins {
 			mask: 0b000000000000000000_0000_1111111,
 			reqd: 0b000000000000000000_0000_0110111,
 			name: "LUI",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatU
 				Ok(())
@@ -252,6 +254,7 @@ pub mod ins {
 			mask: 0b000000000000000000_0000_1111111,
 			reqd: 0b000000000000000000_0000_0010111,
 			name: "AUIPC",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatU
 				Ok(())
@@ -262,6 +265,7 @@ pub mod ins {
 			mask: 0b000000000000000000_0000_1111111,
 			reqd: 0b000000000000000000_0000_1101111,
 			name: "JAL",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatJ
 				Ok(())
@@ -272,6 +276,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_000_0000_1100111,
 			name: "JALR",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -282,6 +287,7 @@ pub mod ins {
 			mask: 0b0000000_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_000_0000_1100011,
 			name: "BEQ",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatB
 				Ok(())
@@ -292,6 +298,7 @@ pub mod ins {
 			mask: 0b0000000_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_001_0000_1100011,
 			name: "BNQ",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatB
 				Ok(())
@@ -302,6 +309,7 @@ pub mod ins {
 			mask: 0b0000000_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_100_0000_1100011,
 			name: "BLT",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatB
 				Ok(())
@@ -312,6 +320,7 @@ pub mod ins {
 			mask: 0b0000000_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_101_0000_1100011,
 			name: "BGE",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatB
 				Ok(())
@@ -322,6 +331,7 @@ pub mod ins {
 			mask: 0b0000000_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_110_0000_1100011,
 			name: "BLTU",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatB
 				Ok(())
@@ -332,6 +342,7 @@ pub mod ins {
 			mask: 0b0000000_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_111_0000_1100011,
 			name: "BGEU",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatB
 				Ok(())
@@ -342,6 +353,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_000_0000_0000011,
 			name: "LB",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -352,6 +364,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_001_0000_0000011,
 			name: "LH",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -362,6 +375,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_010_0000_0000011,
 			name: "LW",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -372,6 +386,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_100_0000_0000011,
 			name: "LBU",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -382,6 +397,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_101_0000_0000011,
 			name: "LHU",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -392,6 +408,7 @@ pub mod ins {
 			mask: 0b0000000_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_000_0000_0100011,
 			name: "SB",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatS
 				Ok(())
@@ -402,6 +419,7 @@ pub mod ins {
 			mask: 0b0000000_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_001_0000_0100011,
 			name: "SH",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatS
 				Ok(())
@@ -412,6 +430,7 @@ pub mod ins {
 			mask: 0b0000000_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_010_0000_0100011,
 			name: "SW",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatS
 				Ok(())
@@ -422,6 +441,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_000_0000_0010011,
 			name: "ADDI",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -432,6 +452,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_010_0000_0010011,
 			name: "SLTI",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -442,6 +463,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_011_0000_0010011,
 			name: "SLTIU",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -452,6 +474,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_100_0000_0010011,
 			name: "XORI",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -462,6 +485,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_110_0000_0010011,
 			name: "ORI",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -472,6 +496,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_111_0000_0010011,
 			name: "ANDI",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -484,6 +509,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_001_0000_0010011,
 			name: "SLLI",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI (special)
 				Ok(())
@@ -494,6 +520,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_101_0000_0010011,
 			name: "SRLI",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI (special)
 				Ok(())
@@ -504,6 +531,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0100000_0000_0000_101_0000_0010011,
 			name: "SRAI",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI (special)
 				Ok(())
@@ -515,6 +543,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_000_0000_0110011,
 			name: "ADD",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -525,6 +554,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0100000_0000_0000_000_0000_0110011,
 			name: "SUB",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -535,6 +565,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_001_0000_0110011,
 			name: "SLL",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -545,6 +576,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_010_0000_0110011,
 			name: "SLT",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -555,6 +587,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_011_0000_0110011,
 			name: "SLTU",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -565,6 +598,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_100_0000_0110011,
 			name: "XOR",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -575,6 +609,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_101_0000_0110011,
 			name: "SRL",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -585,6 +620,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0100000_0000_0000_101_0000_0110011,
 			name: "SRA",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -595,6 +631,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_110_0000_0110011,
 			name: "OR",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -605,6 +642,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_111_0000_0110011,
 			name: "AND",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -615,6 +653,7 @@ pub mod ins {
 			mask: 0b000_0000_0000_0000_111_0000_1111111,
 			reqd: 0b000_0000_0000_0000_000_0000_0001111,
 			name: "FENCE",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// Special
 				Ok(())
@@ -625,6 +664,7 @@ pub mod ins {
 			mask: 0b11111111111_1111_111_1111_1111111,
 			reqd: 0b00000000000_0000_000_0000_1110011,
 			name: "ECALL",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -635,6 +675,7 @@ pub mod ins {
 			mask: 0b11111111111_1111_111_1111_1111111,
 			reqd: 0b00000000001_0000_000_0000_1110011,
 			name: "EBREAK",
+			extension: "RV32I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -646,6 +687,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_110_0000_0000011,
 			name: "LWU",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -656,6 +698,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_011_0000_0000011,
 			name: "LD",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -666,6 +709,7 @@ pub mod ins {
 			mask: 0b0000000_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_011_0000_0100011,
 			name: "SD",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatS
 				Ok(())
@@ -676,6 +720,7 @@ pub mod ins {
 			mask: 0b111111_00000_0000_111_0000_1111111,
 			reqd: 0b000000_00000_0000_001_0000_0010011,
 			name: "SLLI",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -686,6 +731,7 @@ pub mod ins {
 			mask: 0b111111_00000_0000_111_0000_1111111,
 			reqd: 0b000000_00000_0000_101_0000_0010011,
 			name: "SRLI",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -696,6 +742,7 @@ pub mod ins {
 			mask: 0b111111_00000_0000_111_0000_1111111,
 			reqd: 0b010000_00000_0000_101_0000_0010011,
 			name: "SRAI",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -706,6 +753,7 @@ pub mod ins {
 			mask: 0b00000000000_0000_111_0000_1111111,
 			reqd: 0b00000000000_0000_000_0000_0011011,
 			name: "ADDIW",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatI
 				Ok(())
@@ -716,6 +764,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_001_0000_0011011,
 			name: "SLLIW",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -726,6 +775,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_101_0000_0011011,
 			name: "SRLIW",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -736,6 +786,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0100000_0000_0000_101_0000_0011011,
 			name: "SRAIW",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -746,6 +797,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_000_0000_0111011,
 			name: "ADDW",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -756,6 +808,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0100000_0000_0000_000_0000_0111011,
 			name: "SUBW",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -766,6 +819,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_001_0000_0111011,
 			name: "SLLW",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -776,6 +830,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0000000_0000_0000_101_0000_0111011,
 			name: "SRLW",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
@@ -786,6 +841,7 @@ pub mod ins {
 			mask: 0b1111111_0000_0000_111_0000_1111111,
 			reqd: 0b0100000_0000_0000_101_0000_0111011,
 			name: "SRAW",
+			extension: "RV64I",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
