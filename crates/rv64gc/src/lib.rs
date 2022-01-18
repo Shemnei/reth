@@ -236,7 +236,7 @@ pub mod ins {
 		op: fn(cpu: &mut Cpu, word: u32) -> Result<(), Trap>,
 	}
 
-	pub const INSTRUCTIONS: [Instruction; 67] = [
+	pub const INSTRUCTIONS: [Instruction; 72] = [
 		// RV32I
 		Instruction {
 			//      imm                rd   op
@@ -1013,6 +1013,63 @@ pub mod ins {
 			reqd: 0b0000001_0000_0000_111_0000_0110011,
 			name: "REMU",
 			extension: "RV32M",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+
+		// RV64M
+		Instruction {
+			//      fn7     rs2  rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000001_0000_0000_000_0000_0111011,
+			name: "MULW",
+			extension: "RV64M",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     rs2  rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000001_0000_0000_100_0000_0111011,
+			name: "DIVW",
+			extension: "RV64M",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     rs2  rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000001_0000_0000_101_0000_0111011,
+			name: "DIVUW",
+			extension: "RV64M",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     rs2  rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000001_0000_0000_110_0000_0111011,
+			name: "REMW",
+			extension: "RV64M",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     rs2  rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000001_0000_0000_111_0000_0111011,
+			name: "REMUW",
+			extension: "RV64M",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
