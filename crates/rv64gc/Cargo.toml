@@ -9,6 +9,3 @@ edition = "2021"
 incremental = true
 
 [dependencies]
-
-[dev-dependencies]
-rayon = "1.5.1"

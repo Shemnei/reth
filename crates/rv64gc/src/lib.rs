@@ -1135,25 +1135,42 @@ pub mod ins {
 	#[ignore = "Takes long to run and maxes out the whole cpu. Only run when \
 	            the instructions change."]
 	fn unique_instruction_codes() {
-		use rayon::prelude::*;
+		const THREADS: u32 = 8;
+		const CHUNK: u32 = u32::MAX / THREADS as u32;
 
-		(0..=u32::MAX).into_par_iter().for_each(|word| {
-			let mut found: Option<&Instruction> = None;
+		let mut handles = Vec::with_capacity(THREADS as usize);
 
-			for instr in &INSTRUCTIONS {
-				if word & instr.mask == instr.reqd {
-					if let Some(f) = found {
-						panic!(
-							"Found duplicate instruction code for `{}` and \
-							 `{}`",
-							instr.name, f.name
-						);
-					} else {
-						found = Some(instr);
+		for i in 0..THREADS {
+			let start = i * CHUNK;
+			let end =
+				if i - 1 == THREADS { u32::MAX } else { (i + 1) * CHUNK };
+
+			let handle = std::thread::spawn(move || {
+				for word in start..=end {
+					let mut found: Option<&Instruction> = None;
+
+					for instr in &INSTRUCTIONS {
+						if word & instr.mask == instr.reqd {
+							if let Some(f) = found {
+								panic!(
+									"Found duplicate instruction code for \
+									 `{}` and `{}`",
+									instr.name, f.name
+								);
+							} else {
+								found = Some(instr);
+							}
+						}
 					}
 				}
-			}
-		})
+			});
+
+			handles.push(handle);
+		}
+
+		for handle in handles {
+			handle.join().unwrap();
+		}
 	}
 }
 
