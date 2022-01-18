@@ -236,7 +236,7 @@ pub mod ins {
 		op: fn(cpu: &mut Cpu, word: u32) -> Result<(), Trap>,
 	}
 
-	pub const INSTRUCTIONS: [Instruction; 59] = [
+	pub const INSTRUCTIONS: [Instruction; 67] = [
 		// RV32I
 		Instruction {
 			//      imm                rd   op
@@ -925,6 +925,96 @@ pub mod ins {
 			extension: "Zicsr",
 			op: |cpu, word| {
 				// FormatI
+				Ok(())
+			},
+		},
+
+		// RV32M
+		Instruction {
+			//      fn7     rs2  rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000001_0000_0000_000_0000_0110011,
+			name: "MUL",
+			extension: "RV32M",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     rs2  rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000001_0000_0000_001_0000_0110011,
+			name: "MULH",
+			extension: "RV32M",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     rs2  rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000001_0000_0000_010_0000_0110011,
+			name: "MULHSU",
+			extension: "RV32M",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     rs2  rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000001_0000_0000_011_0000_0110011,
+			name: "MULHU",
+			extension: "RV32M",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     rs2  rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000001_0000_0000_100_0000_0110011,
+			name: "DIV",
+			extension: "RV32M",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     rs2  rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000001_0000_0000_101_0000_0110011,
+			name: "DIVU",
+			extension: "RV32M",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     rs2  rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000001_0000_0000_110_0000_0110011,
+			name: "REM",
+			extension: "RV32M",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     rs2  rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000001_0000_0000_111_0000_0110011,
+			name: "REMU",
+			extension: "RV32M",
+			op: |cpu, word| {
+				// FormatR
 				Ok(())
 			},
 		},
