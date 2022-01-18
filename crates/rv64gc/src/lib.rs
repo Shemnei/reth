@@ -235,7 +235,7 @@ pub mod ins {
 		op: fn(cpu: &mut Cpu, word: u32) -> Result<(), Trap>,
 	}
 
-	pub const INSTRUCTIONS: [Instruction; 40] = [
+	pub const INSTRUCTIONS: [Instruction; 52] = [
 		// RV32I
 		Instruction {
 			//      imm                rd   op
@@ -477,6 +477,8 @@ pub mod ins {
 				Ok(())
 			},
 		},
+		/**
+		 * Disabled in favour of RV64I versions
 		Instruction {
 			//      imm     shct rs1  fn3 rd   op
 			mask: 0b1111111_0000_0000_111_0000_1111111,
@@ -507,6 +509,7 @@ pub mod ins {
 				Ok(())
 			},
 		},
+		*/
 		Instruction {
 			//      fn7     rs2  rs1  fn3 rd   op
 			mask: 0b1111111_0000_0000_111_0000_1111111,
@@ -637,6 +640,157 @@ pub mod ins {
 				Ok(())
 			},
 		},
+		// RV64I
+		Instruction {
+			//      imm         rs1  fn3 rd   op
+			mask: 0b00000000000_0000_111_0000_1111111,
+			reqd: 0b00000000000_0000_110_0000_0000011,
+			name: "LWU",
+			op: |cpu, word| {
+				// FormatI
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm         rs1  fn3 rd   op
+			mask: 0b00000000000_0000_111_0000_1111111,
+			reqd: 0b00000000000_0000_011_0000_0000011,
+			name: "LD",
+			op: |cpu, word| {
+				// FormatI
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2  rs1  fn3 imm  op
+			mask: 0b0000000_0000_0000_111_0000_1111111,
+			reqd: 0b0000000_0000_0000_011_0000_0100011,
+			name: "SD",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7    shamt rs1  fn3 rd   op
+			mask: 0b111111_00000_0000_111_0000_1111111,
+			reqd: 0b000000_00000_0000_001_0000_0010011,
+			name: "SLLI",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7    shamt rs1  fn3 rd   op
+			mask: 0b111111_00000_0000_111_0000_1111111,
+			reqd: 0b000000_00000_0000_101_0000_0010011,
+			name: "SRLI",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7    shamt rs1  fn3 rd   op
+			mask: 0b111111_00000_0000_111_0000_1111111,
+			reqd: 0b010000_00000_0000_101_0000_0010011,
+			name: "SRAI",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm         rs1  fn3 rd   op
+			mask: 0b00000000000_0000_111_0000_1111111,
+			reqd: 0b00000000000_0000_000_0000_0011011,
+			name: "ADDIW",
+			op: |cpu, word| {
+				// FormatI
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     shamt rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000000_0000_0000_001_0000_0011011,
+			name: "SLLIW",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     shamt rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000000_0000_0000_101_0000_0011011,
+			name: "SRLIW",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     shamt rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0100000_0000_0000_101_0000_0011011,
+			name: "SRAIW",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     shamt rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000000_0000_0000_000_0000_0111011,
+			name: "ADDW",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     shamt rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0100000_0000_0000_000_0000_0111011,
+			name: "SUBW",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     shamt rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000000_0000_0000_001_0000_0111011,
+			name: "SLLW",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     shamt rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0000000_0000_0000_101_0000_0111011,
+			name: "SRLW",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7     shamt rs1  fn3 rd   op
+			mask: 0b1111111_0000_0000_111_0000_1111111,
+			reqd: 0b0100000_0000_0000_101_0000_0111011,
+			name: "SRAW",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
 	];
 
 	#[test]
@@ -700,9 +854,10 @@ pub mod ins {
 			for instr in &INSTRUCTIONS {
 				if word & instr.mask == instr.reqd {
 					if let Some(f) = found {
-						assert_eq!(
-							f.name, instr.name,
-							"Found duplicate instruction code"
+						panic!(
+							"Found duplicate instruction code for `{}` and \
+							 `{}`",
+							instr.name, f.name
 						);
 					} else {
 						found = Some(instr);
