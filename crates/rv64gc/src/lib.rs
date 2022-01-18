@@ -24,13 +24,22 @@ pub mod shared {
 
 	#[test]
 	fn assert_twos_complement() {
-		assert_eq!(format!("{:b}", -128_i8), "10000000");
+		assert_eq!(unsafe { core::mem::transmute::<i8, u8>(-128_i8) }, 128_u8);
+
+		assert_eq!(unsafe { core::mem::transmute::<u8, i8>(255_u8) }, -1_i8);
 	}
 
 	#[test]
 	fn assert_sign_extend() {
-		assert_eq!(format!("{:016b}", 1_i8 as i16), "0000000000000001");
-		assert_eq!(format!("{:016b}", -128_i8 as i16), "1111111110000000");
+		assert_eq!(
+			unsafe { core::mem::transmute::<i16, u16>(1_i8 as i16) },
+			1_u16
+		);
+
+		assert_eq!(
+			unsafe { core::mem::transmute::<i16, u16>(-128_i8 as i16) },
+			0xff80_u16
+		);
 	}
 }
 
@@ -847,7 +856,6 @@ pub mod ins {
 				Ok(())
 			},
 		},
-
 		// RV32/RV64 Zifencei
 		Instruction {
 			//      imm         rs1  fn3 rd   op
@@ -860,7 +868,6 @@ pub mod ins {
 				Ok(())
 			},
 		},
-
 		// RV32/RV64 Zicsr
 		Instruction {
 			//      csr         rs1  fn3 rd   op
@@ -928,7 +935,6 @@ pub mod ins {
 				Ok(())
 			},
 		},
-
 		// RV32M
 		Instruction {
 			//      fn7     rs2  rs1  fn3 rd   op
@@ -1018,7 +1024,6 @@ pub mod ins {
 				Ok(())
 			},
 		},
-
 		// RV64M
 		Instruction {
 			//      fn7     rs2  rs1  fn3 rd   op
@@ -1127,8 +1132,8 @@ pub mod ins {
 	}
 
 	#[test]
-	#[ignore = "Takes very very long to run and maxes out the whole cpu. Only \
-	            run when the instructions change."]
+	#[ignore = "Takes long to run and maxes out the whole cpu. Only run when \
+	            the instructions change."]
 	fn unique_instruction_codes() {
 		use rayon::prelude::*;
 
