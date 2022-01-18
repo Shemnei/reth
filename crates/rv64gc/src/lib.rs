@@ -128,11 +128,27 @@ pub mod adr {
 pub mod ins {
 	pub mod format {
 		macro_rules! instruction_format {
-			( $size:ty => $format:ident ( $( $field:ident [ $( sign @ $sign:literal => )? $( shl $shl:literal => )? $( $lo:literal : $hi:literal $( @ $start:literal )? )|+ ] : $( $( as $step:ty )+ => )* $fsize:ty ),+ ) ) => {
+			(
+				$size:ty => $format:ident (
+					$(
+						// Field: <name>[(sign@<sign_bit>)? (shl <amount> =>)? lo:hi (| lo:hi)*]: <type>
+						$field:ident [
+							// OPT: From where to take the sign extend bit
+							$( sign @ $sign:literal => )?
+							// OPT: Shift left amount before parsing fields
+							$( shl $shl:literal => )?
+							$( $lo:literal : $hi:literal $( @ $start:literal )? )|+
+							// OPT: Cast steps which will be applied in sequence
+							// This is primarily used to sign extend from `i32`
+							// to `i64`.
+						] : $( $( as $step:ty )+ => )* $fsize:ty
+					),+
+				)
+			) => {
 				#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 				pub struct $format {
 					$(
-						$field: $fsize,
+						pub $field: $fsize,
 					)+
 				}
 
@@ -142,6 +158,7 @@ pub mod ins {
 							let mut $field = 0;
 							{
 								$(
+									// "Sign extend" when bit is given
 									if size >> $sign == 1 {
 										$field = !0;
 									}
