@@ -1271,7 +1271,12 @@ pub mod reg {
 			#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 			pub enum $regs {
 				$(
-					$( #[doc = $doc] )*
+					#[doc = "Register `"]
+					#[doc = stringify!($ident)]
+					#[doc = "` / `"]
+					#[doc = $name]
+					#[doc = "`: "]
+					#[doc = $desc]
 					$ident,
 				)+
 			}
@@ -1304,7 +1309,6 @@ pub mod reg {
 
 	regs! {
 		IntReg {
-			/// Always `0`
 			Reg(x0, name = "Zero", desc = "Always zero"),
 			Reg(x1, name = "ra", desc = "Return address"),
 			Reg(x2, name = "sp", desc = "Stack pointer"),
