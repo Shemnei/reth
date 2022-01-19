@@ -110,6 +110,7 @@ pub struct Instruction {
 	op: fn(cpu: &mut Cpu, word: u32) -> Result<(), Trap>,
 }
 
+#[allow(unused_doc_comments, clippy::unusual_byte_groupings, clippy::tabs_in_doc_comments)]
 pub const INSTRUCTIONS: [Instruction; 156] = [
 	// RV32I
 	Instruction {
@@ -118,7 +119,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00000000000000000000_00000_0110111,
 		name: "LUI",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatU
 			Ok(())
 		},
@@ -129,7 +130,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00000000000000000000_00000_0010111,
 		name: "AUIPC",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatU
 			Ok(())
 		},
@@ -140,7 +141,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00000000000000000000_00000_1101111,
 		name: "JAL",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatJ
 			Ok(())
 		},
@@ -151,7 +152,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_000_00000_1100111,
 		name: "JALR",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -162,7 +163,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_000_00000_1100011,
 		name: "BEQ",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatB
 			Ok(())
 		},
@@ -173,7 +174,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_001_00000_1100011,
 		name: "BNQ",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatB
 			Ok(())
 		},
@@ -184,7 +185,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_100_00000_1100011,
 		name: "BLT",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatB
 			Ok(())
 		},
@@ -195,7 +196,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_101_00000_1100011,
 		name: "BGE",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatB
 			Ok(())
 		},
@@ -206,7 +207,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_110_00000_1100011,
 		name: "BLTU",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatB
 			Ok(())
 		},
@@ -217,7 +218,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_111_00000_1100011,
 		name: "BGEU",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatB
 			Ok(())
 		},
@@ -228,7 +229,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_000_00000_0000011,
 		name: "LB",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -239,7 +240,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_001_00000_0000011,
 		name: "LH",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -250,7 +251,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_010_00000_0000011,
 		name: "LW",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -261,7 +262,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_100_00000_0000011,
 		name: "LBU",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -272,7 +273,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_101_00000_0000011,
 		name: "LHU",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -283,7 +284,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_000_00000_0100011,
 		name: "SB",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -294,7 +295,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_001_00000_0100011,
 		name: "SH",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -305,7 +306,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_010_00000_0100011,
 		name: "SW",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -316,7 +317,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_000_00000_0010011,
 		name: "ADDI",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -327,7 +328,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_010_00000_0010011,
 		name: "SLTI",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -338,7 +339,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_011_00000_0010011,
 		name: "SLTIU",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -349,7 +350,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_100_00000_0010011,
 		name: "XORI",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -360,7 +361,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_110_00000_0010011,
 		name: "ORI",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -371,7 +372,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_111_00000_0010011,
 		name: "ANDI",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -384,7 +385,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_001_00000_0010011,
 		name: "SLLI",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI (special)
 			Ok(())
 		},
@@ -395,7 +396,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_101_00000_0010011,
 		name: "SRLI",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI (special)
 			Ok(())
 		},
@@ -406,7 +407,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0100000_00000_00000_101_00000_0010011,
 		name: "SRAI",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI (special)
 			Ok(())
 		},
@@ -418,7 +419,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_000_00000_0110011,
 		name: "ADD",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -429,7 +430,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0100000_00000_00000_000_00000_0110011,
 		name: "SUB",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -440,7 +441,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_001_00000_0110011,
 		name: "SLL",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -451,7 +452,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_010_00000_0110011,
 		name: "SLT",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -462,7 +463,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_011_00000_0110011,
 		name: "SLTU",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -473,7 +474,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_100_00000_0110011,
 		name: "XOR",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -484,7 +485,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_101_00000_0110011,
 		name: "SRL",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -495,7 +496,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0100000_00000_00000_101_00000_0110011,
 		name: "SRA",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -506,7 +507,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_110_00000_0110011,
 		name: "OR",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -517,7 +518,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_111_00000_0110011,
 		name: "AND",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -528,7 +529,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000_0000_0000_00000_000_00000_0001111,
 		name: "FENCE",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// Special
 			Ok(())
 		},
@@ -539,7 +540,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_000_00000_1110011,
 		name: "ECALL",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -550,7 +551,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000001_00000_000_00000_1110011,
 		name: "EBREAK",
 		extension: "RV32I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -562,7 +563,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_110_00000_0000011,
 		name: "LWU",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -573,7 +574,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_011_00000_0000011,
 		name: "LD",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -584,7 +585,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00000000_00000_00000_011_00000_0100011,
 		name: "SD",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -595,7 +596,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000_000000_00000_001_00000_0010011,
 		name: "SLLI",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -606,7 +607,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000_000000_00000_101_00000_0010011,
 		name: "SRLI",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -617,7 +618,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b010000_000000_00000_101_00000_0010011,
 		name: "SRAI",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -628,7 +629,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_000_00000_0011011,
 		name: "ADDIW",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -639,7 +640,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_001_00000_0011011,
 		name: "SLLIW",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -650,7 +651,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_101_00000_0011011,
 		name: "SRLIW",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -661,7 +662,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0100000_00000_00000_101_00000_0011011,
 		name: "SRAIW",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -672,7 +673,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_000_00000_0111011,
 		name: "ADDW",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -683,7 +684,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0100000_00000_00000_000_00000_0111011,
 		name: "SUBW",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -694,7 +695,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_001_00000_0111011,
 		name: "SLLW",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -705,7 +706,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_101_00000_0111011,
 		name: "SRLW",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -716,7 +717,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0100000_00000_00000_101_00000_0111011,
 		name: "SRAW",
 		extension: "RV64I",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -728,7 +729,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_001_00000_0001111,
 		name: "FENCE.I",
 		extension: "Zifencei",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -740,7 +741,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_001_00000_1110011,
 		name: "CSRRW",
 		extension: "Zicsr",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -751,7 +752,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_010_00000_1110011,
 		name: "CSRRS",
 		extension: "Zicsr",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -762,7 +763,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_011_00000_1110011,
 		name: "CSRRC",
 		extension: "Zicsr",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -773,7 +774,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_101_00000_1110011,
 		name: "CSRRWI",
 		extension: "Zicsr",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -784,7 +785,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_110_00000_1110011,
 		name: "CSRRSI",
 		extension: "Zicsr",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -795,7 +796,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_111_00000_1110011,
 		name: "CSRRCI",
 		extension: "Zicsr",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -807,7 +808,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000001_00000_00000_000_00000_0110011,
 		name: "MUL",
 		extension: "RV32M",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -818,7 +819,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000001_00000_00000_001_00000_0110011,
 		name: "MULH",
 		extension: "RV32M",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -829,7 +830,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000001_00000_00000_010_00000_0110011,
 		name: "MULHSU",
 		extension: "RV32M",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -840,7 +841,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000001_00000_00000_011_00000_0110011,
 		name: "MULHU",
 		extension: "RV32M",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -851,7 +852,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000001_00000_00000_100_00000_0110011,
 		name: "DIV",
 		extension: "RV32M",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -862,7 +863,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000001_00000_00000_101_00000_0110011,
 		name: "DIVU",
 		extension: "RV32M",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -873,7 +874,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000001_00000_00000_110_00000_0110011,
 		name: "REM",
 		extension: "RV32M",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -884,7 +885,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000001_00000_00000_111_00000_0110011,
 		name: "REMU",
 		extension: "RV32M",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -896,7 +897,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000001_00000_00000_000_00000_0111011,
 		name: "MULW",
 		extension: "RV64M",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -907,7 +908,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000001_00000_00000_100_00000_0111011,
 		name: "DIVW",
 		extension: "RV64M",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -918,7 +919,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000001_00000_00000_101_00000_0111011,
 		name: "DIVUW",
 		extension: "RV64M",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -929,7 +930,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000001_00000_00000_110_00000_0111011,
 		name: "REMW",
 		extension: "RV64M",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -940,7 +941,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000001_00000_00000_111_00000_0111011,
 		name: "REMUW",
 		extension: "RV64M",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -952,7 +953,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00010_0_0_00000_00000_010_00000_0101111,
 		name: "LR.W",
 		extension: "RV32A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -963,7 +964,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00011_0_0_00000_00000_010_00000_0101111,
 		name: "SC.W",
 		extension: "RV32A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -974,7 +975,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00001_0_0_00000_00000_010_00000_0101111,
 		name: "AMOSWAP.W",
 		extension: "RV32A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -985,7 +986,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00000_0_0_00000_00000_010_00000_0101111,
 		name: "AMOADD.W",
 		extension: "RV32A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -996,7 +997,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00100_0_0_00000_00000_010_00000_0101111,
 		name: "AMOXOR.W",
 		extension: "RV32A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1007,7 +1008,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b01100_0_0_00000_00000_010_00000_0101111,
 		name: "AMOAND.W",
 		extension: "RV32A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1018,7 +1019,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b01000_0_0_00000_00000_010_00000_0101111,
 		name: "AMOOR.W",
 		extension: "RV32A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1029,7 +1030,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b10000_0_0_00000_00000_010_00000_0101111,
 		name: "AMOMIN.W",
 		extension: "RV32A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1040,7 +1041,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b10100_0_0_00000_00000_010_00000_0101111,
 		name: "AMOMAX.W",
 		extension: "RV32A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1051,7 +1052,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b11000_0_0_00000_00000_010_00000_0101111,
 		name: "AMOMINU.W",
 		extension: "RV32A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1062,7 +1063,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b11100_0_0_00000_00000_010_00000_0101111,
 		name: "AMOMAXU.W",
 		extension: "RV32A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1074,7 +1075,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00010_0_0_00000_00000_011_00000_0101111,
 		name: "LR.D",
 		extension: "RV64A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1085,7 +1086,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00011_0_0_00000_00000_011_00000_0101111,
 		name: "SC.D",
 		extension: "RV64A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1096,7 +1097,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00001_0_0_00000_00000_011_00000_0101111,
 		name: "AMOSWAP.D",
 		extension: "RV64A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1107,7 +1108,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00000_0_0_00000_00000_011_00000_0101111,
 		name: "AMOADD.D",
 		extension: "RV64A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1118,7 +1119,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00100_0_0_00000_00000_011_00000_0101111,
 		name: "AMOXOR.D",
 		extension: "RV64A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1129,7 +1130,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b01100_0_0_00000_00000_011_00000_0101111,
 		name: "AMOAND.D",
 		extension: "RV64A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1140,7 +1141,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b01000_0_0_00000_00000_011_00000_0101111,
 		name: "AMOOR.D",
 		extension: "RV64A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1151,7 +1152,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b10000_0_0_00000_00000_011_00000_0101111,
 		name: "AMOMIN.D",
 		extension: "RV64A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1162,7 +1163,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b10100_0_0_00000_00000_011_00000_0101111,
 		name: "AMOMAX.D",
 		extension: "RV64A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1173,7 +1174,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b11000_0_0_00000_00000_011_00000_0101111,
 		name: "AMOMINU.D",
 		extension: "RV64A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1184,7 +1185,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b11100_0_0_00000_00000_011_00000_0101111,
 		name: "AMOMAXU.D",
 		extension: "RV64A",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1196,7 +1197,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_010_00000_0000111,
 		name: "FLW",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -1207,7 +1208,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_010_00000_0100111,
 		name: "FSW",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1218,7 +1219,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00000_00_00000_00000_000_00000_1000011,
 		name: "FMADD.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1229,7 +1230,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00000_00_00000_00000_000_00000_1000111,
 		name: "FMSUB.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1240,7 +1241,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00000_00_00000_00000_000_00000_1001011,
 		name: "FNMSUB.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1251,7 +1252,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00000_00_00000_00000_000_00000_1001111,
 		name: "FNMADD.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1262,7 +1263,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_000_00000_1010011,
 		name: "FADD.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1273,7 +1274,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000100_00000_00000_000_00000_1010011,
 		name: "FSUB.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1284,7 +1285,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0001000_00000_00000_000_00000_1010011,
 		name: "FMUL.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1295,7 +1296,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0001100_00000_00000_000_00000_1010011,
 		name: "FDIV.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1306,7 +1307,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0101100_00000_00000_000_00000_1010011,
 		name: "FSQRT.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1317,7 +1318,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0010000_00000_00000_000_00000_1010011,
 		name: "FSGNJ.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1328,7 +1329,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0010000_00000_00000_001_00000_1010011,
 		name: "FSGNJN.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1339,7 +1340,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0010000_00000_00000_010_00000_1010011,
 		name: "FSGNJX.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1350,7 +1351,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0010100_00000_00000_000_00000_1010011,
 		name: "FMIN.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1361,7 +1362,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0010100_00000_00000_001_00000_1010011,
 		name: "FMAX.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1372,7 +1373,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1100000_00000_00000_000_00000_1010011,
 		name: "FCVT.W.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1383,7 +1384,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1100000_00001_00000_000_00000_1010011,
 		name: "FCVT.WU.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1394,7 +1395,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1110000_00000_00000_000_00000_1010011,
 		name: "FMV.X.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1405,7 +1406,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1010000_00000_00000_010_00000_1010011,
 		name: "FEQ.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1416,7 +1417,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1010000_00000_00000_001_00000_1010011,
 		name: "FLT.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1427,7 +1428,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1010000_00000_00000_000_00000_1010011,
 		name: "FLE.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1438,7 +1439,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1110000_00000_00000_001_00000_1010011,
 		name: "FCLASS.S",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1449,7 +1450,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1101000_00000_00000_000_00000_1010011,
 		name: "FCVT.S.W",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1460,7 +1461,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1101000_00001_00000_000_00000_1010011,
 		name: "FCVT.S.WU",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1471,7 +1472,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1111000_00000_00000_000_00000_1010011,
 		name: "FMV.W.X",
 		extension: "RV32F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1483,7 +1484,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1100000_00010_00000_000_00000_1010011,
 		name: "FCVT.L.S",
 		extension: "RV64F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1494,7 +1495,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1100000_00011_00000_000_00000_1010011,
 		name: "FCVT.LU.S",
 		extension: "RV64F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1505,7 +1506,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1101000_00010_00000_000_00000_1010011,
 		name: "FCVT.S.L",
 		extension: "RV64F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1516,7 +1517,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1101000_00011_00000_000_00000_1010011,
 		name: "FCVT.S.LU",
 		extension: "RV64F",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1528,7 +1529,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b000000000000_00000_011_00000_0000111,
 		name: "FLD",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatI
 			Ok(())
 		},
@@ -1539,7 +1540,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000000_00000_00000_011_00000_0100111,
 		name: "FSD",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1550,7 +1551,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00000_01_00000_00000_000_00000_1000011,
 		name: "FMADD.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1561,7 +1562,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00000_01_00000_00000_000_00000_1000111,
 		name: "FMSUB.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1572,7 +1573,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00000_01_00000_00000_000_00000_1001011,
 		name: "FNMSUB.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1583,7 +1584,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b00000_01_00000_00000_000_00000_1001111,
 		name: "FNMADD.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatR
 			Ok(())
 		},
@@ -1594,7 +1595,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000001_00000_00000_000_00000_1010011,
 		name: "FADD.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1605,7 +1606,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0000101_00000_00000_000_00000_1010011,
 		name: "FSUB.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1616,7 +1617,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0001001_00000_00000_000_00000_1010011,
 		name: "FMUL.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1627,7 +1628,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0001101_00000_00000_000_00000_1010011,
 		name: "FDIV.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1638,7 +1639,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0101101_00000_00000_000_00000_1010011,
 		name: "FSQRT.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1649,7 +1650,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0010001_00000_00000_000_00000_1010011,
 		name: "FSGNJ.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1660,7 +1661,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0010001_00000_00000_001_00000_1010011,
 		name: "FSGNJN.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1671,7 +1672,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0010001_00000_00000_010_00000_1010011,
 		name: "FSGNJX.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1682,7 +1683,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0010101_00000_00000_000_00000_1010011,
 		name: "FMIN.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1693,7 +1694,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0010101_00000_00000_001_00000_1010011,
 		name: "FMAX.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1704,7 +1705,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0100000_00001_00000_000_00000_1010011,
 		name: "FCVT.S.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1715,7 +1716,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b0100001_00000_00000_000_00000_1010011,
 		name: "FCVT.D.S",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1726,7 +1727,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1010001_00000_00000_010_00000_1010011,
 		name: "FEQ.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1737,7 +1738,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1010001_00000_00000_001_00000_1010011,
 		name: "FLT.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1748,7 +1749,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1010001_00000_00000_000_00000_1010011,
 		name: "FLE.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1759,7 +1760,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1110001_00000_00000_001_00000_1010011,
 		name: "FCLASS.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1770,7 +1771,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1100001_00000_00000_000_00000_1010011,
 		name: "FCVT.W.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1781,7 +1782,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1100001_00001_00000_000_00000_1010011,
 		name: "FCVT.WU.D",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1792,7 +1793,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1101001_00000_00000_000_00000_1010011,
 		name: "FCVT.D.W",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1803,7 +1804,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1101001_00001_00000_000_00000_1010011,
 		name: "FCVT.D.WU",
 		extension: "RV32D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1815,7 +1816,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1100001_00010_00000_000_00000_1010011,
 		name: "FCVT.L.D",
 		extension: "RV64D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1826,7 +1827,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1100001_00011_00000_000_00000_1010011,
 		name: "FCVT.LU.D",
 		extension: "RV64D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1837,7 +1838,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1110001_00000_00000_000_00000_1010011,
 		name: "FMV.X.D",
 		extension: "RV64D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1848,7 +1849,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1101001_00010_00000_000_00000_1010011,
 		name: "FCVT.D.L",
 		extension: "RV64D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1859,7 +1860,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1101001_00011_00000_000_00000_1010011,
 		name: "FCVT.D.LU",
 		extension: "RV64D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},
@@ -1870,7 +1871,7 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 		reqd: 0b1111001_00000_00000_000_00000_1010011,
 		name: "FMV.D.X",
 		extension: "RV64D",
-		op: |cpu, word| {
+		op: |_cpu, _word| {
 			// FormatS
 			Ok(())
 		},

@@ -92,11 +92,14 @@ pub mod adr {
 		};
 	}
 
+	#[allow(clippy::len_without_is_empty)]
 	pub trait Addressable {
 		type Address;
 		type Error;
 
 		fn len(&self) -> usize;
+
+		// TODO: impl is_empty? does not realy make sense
 
 		fn read(
 			&mut self,
@@ -387,7 +390,7 @@ pub mod reg {
 pub mod cpu {
 	use crate::mem::MemoryManagementUnit;
 	use crate::reg::{FloatRegisters, IntRegisters};
-	use crate::shared::{IntWidth, XLEN};
+	use crate::shared::IntWidth;
 
 	#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 	pub enum Status {
