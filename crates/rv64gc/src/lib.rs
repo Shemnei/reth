@@ -248,9 +248,9 @@ pub mod ins {
 	pub const INSTRUCTIONS: [Instruction; 72] = [
 		// RV32I
 		Instruction {
-			//      imm                rd   op
-			mask: 0b000000000000000000_0000_1111111,
-			reqd: 0b000000000000000000_0000_0110111,
+			//      imm                  rd    op
+			mask: 0b00000000000000000000_00000_1111111,
+			reqd: 0b00000000000000000000_00000_0110111,
 			name: "LUI",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -259,9 +259,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm                rd   op
-			mask: 0b000000000000000000_0000_1111111,
-			reqd: 0b000000000000000000_0000_0010111,
+			//      imm                  rd    op
+			mask: 0b00000000000000000000_00000_1111111,
+			reqd: 0b00000000000000000000_00000_0010111,
 			name: "AUIPC",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -270,9 +270,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm                rd   op
-			mask: 0b000000000000000000_0000_1111111,
-			reqd: 0b000000000000000000_0000_1101111,
+			//      imm                  rd    op
+			mask: 0b00000000000000000000_00000_1111111,
+			reqd: 0b00000000000000000000_00000_1101111,
 			name: "JAL",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -281,9 +281,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_000_0000_1100111,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_000_00000_1100111,
 			name: "JALR",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -292,9 +292,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm     rs2  rs1  fn3 imm  op
-			mask: 0b0000000_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_000_0000_1100011,
+			//      imm     rs2   rs1   fn3 imm   op
+			mask: 0b0000000_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_000_00000_1100011,
 			name: "BEQ",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -303,9 +303,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm     rs2  rs1  fn3 imm  op
-			mask: 0b0000000_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_001_0000_1100011,
+			//      imm     rs2   rs1   fn3 imm   op
+			mask: 0b0000000_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_001_00000_1100011,
 			name: "BNQ",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -314,9 +314,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm     rs2  rs1  fn3 imm  op
-			mask: 0b0000000_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_100_0000_1100011,
+			//      imm     rs2   rs1   fn3 imm   op
+			mask: 0b0000000_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_100_00000_1100011,
 			name: "BLT",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -325,9 +325,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm     rs2  rs1  fn3 imm  op
-			mask: 0b0000000_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_101_0000_1100011,
+			//      imm     rs2   rs1   fn3 imm   op
+			mask: 0b0000000_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_101_00000_1100011,
 			name: "BGE",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -336,9 +336,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm     rs2  rs1  fn3 imm  op
-			mask: 0b0000000_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_110_0000_1100011,
+			//      imm     rs2   rs1   fn3 imm   op
+			mask: 0b0000000_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_110_00000_1100011,
 			name: "BLTU",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -347,9 +347,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm     rs2  rs1  fn3 imm  op
-			mask: 0b0000000_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_111_0000_1100011,
+			//      imm     rs2   rs1   fn3 imm   op
+			mask: 0b0000000_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_111_00000_1100011,
 			name: "BGEU",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -358,9 +358,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_000_0000_0000011,
+			//      imm         rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_000_00000_0000011,
 			name: "LB",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -369,9 +369,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_001_0000_0000011,
+			//      imm         rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_001_00000_0000011,
 			name: "LH",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -380,9 +380,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_010_0000_0000011,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_010_00000_0000011,
 			name: "LW",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -391,9 +391,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_100_0000_0000011,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_100_00000_0000011,
 			name: "LBU",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -402,9 +402,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_101_0000_0000011,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_101_00000_0000011,
 			name: "LHU",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -413,9 +413,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm     rs2  rs1  fn3 imm  op
-			mask: 0b0000000_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_000_0000_0100011,
+			//      imm     rs2   rs1   fn3 imm   op
+			mask: 0b0000000_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_000_00000_0100011,
 			name: "SB",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -424,9 +424,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm     rs2  rs1  fn3 imm  op
-			mask: 0b0000000_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_001_0000_0100011,
+			//      imm     rs2   rs1   fn3 imm   op
+			mask: 0b0000000_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_001_00000_0100011,
 			name: "SH",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -435,9 +435,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm     rs2  rs1  fn3 imm  op
-			mask: 0b0000000_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_010_0000_0100011,
+			//      imm     rs2   rs1   fn3 imm   op
+			mask: 0b0000000_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_010_00000_0100011,
 			name: "SW",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -446,9 +446,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_000_0000_0010011,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_000_00000_0010011,
 			name: "ADDI",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -457,9 +457,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_010_0000_0010011,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_010_00000_0010011,
 			name: "SLTI",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -468,9 +468,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_011_0000_0010011,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_011_00000_0010011,
 			name: "SLTIU",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -479,9 +479,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_100_0000_0010011,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_100_00000_0010011,
 			name: "XORI",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -490,9 +490,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_110_0000_0010011,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_110_00000_0010011,
 			name: "ORI",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -501,9 +501,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_111_0000_0010011,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_111_00000_0010011,
 			name: "ANDI",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -514,9 +514,9 @@ pub mod ins {
 		/**
 		 * Disabled in favour of RV64I versions
 		Instruction {
-			//      imm     shct rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_001_0000_0010011,
+			//      imm     shct  rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_001_00000_0010011,
 			name: "SLLI",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -525,9 +525,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm     shct rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_101_0000_0010011,
+			//      imm     shct  rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_101_00000_0010011,
 			name: "SRLI",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -536,9 +536,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm     shct rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0100000_0000_0000_101_0000_0010011,
+			//      imm     shct  rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0100000_00000_00000_101_00000_0010011,
 			name: "SRAI",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -548,9 +548,9 @@ pub mod ins {
 		},
 		*/
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_000_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_000_00000_0110011,
 			name: "ADD",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -559,9 +559,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0100000_0000_0000_000_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0100000_00000_00000_000_00000_0110011,
 			name: "SUB",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -570,9 +570,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_001_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_001_00000_0110011,
 			name: "SLL",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -581,9 +581,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_010_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_010_00000_0110011,
 			name: "SLT",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -592,9 +592,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_011_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_011_00000_0110011,
 			name: "SLTU",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -603,9 +603,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_100_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_100_00000_0110011,
 			name: "XOR",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -614,9 +614,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_101_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_101_00000_0110011,
 			name: "SRL",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -625,9 +625,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0100000_0000_0000_101_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0100000_00000_00000_101_00000_0110011,
 			name: "SRA",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -636,9 +636,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_110_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_110_00000_0110011,
 			name: "OR",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -647,9 +647,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_111_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_111_00000_0110011,
 			name: "AND",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -658,9 +658,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fm  pred suc  rs1  fn3 rd   op
-			mask: 0b000_0000_0000_0000_111_0000_1111111,
-			reqd: 0b000_0000_0000_0000_000_0000_0001111,
+			//      fm   pred suc  rs1   fn3 rd    op
+			mask: 0b0000_0000_0000_00000_111_00000_1111111,
+			reqd: 0b0000_0000_0000_00000_000_00000_0001111,
 			name: "FENCE",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -669,9 +669,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b11111111111_1111_111_1111_1111111,
-			reqd: 0b00000000000_0000_000_0000_1110011,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b111111111111_11111_111_11111_1111111,
+			reqd: 0b000000000000_00000_000_00000_1110011,
 			name: "ECALL",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -680,9 +680,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b11111111111_1111_111_1111_1111111,
-			reqd: 0b00000000001_0000_000_0000_1110011,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b111111111111_11111_111_11111_1111111,
+			reqd: 0b000000000001_00000_000_00000_1110011,
 			name: "EBREAK",
 			extension: "RV32I",
 			op: |cpu, word| {
@@ -692,9 +692,9 @@ pub mod ins {
 		},
 		// RV64I
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_110_0000_0000011,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b111111111111_11111_111_11111_1111111,
+			reqd: 0b000000000000_00000_110_00000_0000011,
 			name: "LWU",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -703,9 +703,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_011_0000_0000011,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b111111111111_11111_111_11111_1111111,
+			reqd: 0b000000000000_00000_011_00000_0000011,
 			name: "LD",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -714,9 +714,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm     rs2  rs1  fn3 imm  op
-			mask: 0b0000000_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_011_0000_0100011,
+			//      imm      rs2   rs1   fn3 imm   op
+			mask: 0b00000000_00000_00000_111_00000_1111111,
+			reqd: 0b00000000_00000_00000_011_00000_0100011,
 			name: "SD",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -725,9 +725,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7    shamt rs1  fn3 rd   op
-			mask: 0b111111_00000_0000_111_0000_1111111,
-			reqd: 0b000000_00000_0000_001_0000_0010011,
+			//      fn7    shamt  rs1   fn3 rd    op
+			mask: 0b111111_000000_00000_111_00000_1111111,
+			reqd: 0b000000_000000_00000_001_00000_0010011,
 			name: "SLLI",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -736,9 +736,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7    shamt rs1  fn3 rd   op
-			mask: 0b111111_00000_0000_111_0000_1111111,
-			reqd: 0b000000_00000_0000_101_0000_0010011,
+			//      fn7    shamt  rs1   fn3 rd    op
+			mask: 0b111111_000000_00000_111_00000_1111111,
+			reqd: 0b000000_000000_00000_101_00000_0010011,
 			name: "SRLI",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -747,9 +747,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7    shamt rs1  fn3 rd   op
-			mask: 0b111111_00000_0000_111_0000_1111111,
-			reqd: 0b010000_00000_0000_101_0000_0010011,
+			//      fn7    shamt  rs1   fn3 rd    op
+			mask: 0b111111_000000_00000_111_00000_1111111,
+			reqd: 0b010000_000000_00000_101_00000_0010011,
 			name: "SRAI",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -758,9 +758,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_000_0000_0011011,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_000_00000_0011011,
 			name: "ADDIW",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -769,9 +769,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     shamt rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_001_0000_0011011,
+			//      fn7     shamt rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_001_00000_0011011,
 			name: "SLLIW",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -780,9 +780,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     shamt rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_101_0000_0011011,
+			//      fn7     shamt rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_101_00000_0011011,
 			name: "SRLIW",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -791,9 +791,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     shamt rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0100000_0000_0000_101_0000_0011011,
+			//      fn7     shamt rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0100000_00000_00000_101_00000_0011011,
 			name: "SRAIW",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -802,9 +802,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     shamt rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_000_0000_0111011,
+			//      fn7     shamt rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_000_00000_0111011,
 			name: "ADDW",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -813,9 +813,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     shamt rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0100000_0000_0000_000_0000_0111011,
+			//      fn7     shamt rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0100000_00000_00000_000_00000_0111011,
 			name: "SUBW",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -824,9 +824,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     shamt rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_001_0000_0111011,
+			//      fn7     shamt rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_001_00000_0111011,
 			name: "SLLW",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -835,9 +835,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     shamt rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000000_0000_0000_101_0000_0111011,
+			//      fn7     shamt rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_101_00000_0111011,
 			name: "SRLW",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -846,9 +846,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     shamt rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0100000_0000_0000_101_0000_0111011,
+			//      fn7     shamt rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0100000_00000_00000_101_00000_0111011,
 			name: "SRAW",
 			extension: "RV64I",
 			op: |cpu, word| {
@@ -858,9 +858,9 @@ pub mod ins {
 		},
 		// RV32/RV64 Zifencei
 		Instruction {
-			//      imm         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_001_0000_0001111,
+			//      imm          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_001_00000_0001111,
 			name: "FENCE.I",
 			extension: "Zifencei",
 			op: |cpu, word| {
@@ -870,9 +870,9 @@ pub mod ins {
 		},
 		// RV32/RV64 Zicsr
 		Instruction {
-			//      csr         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_001_0000_1110011,
+			//      csr          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_001_00000_1110011,
 			name: "CSRRW",
 			extension: "Zicsr",
 			op: |cpu, word| {
@@ -881,9 +881,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      csr         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_010_0000_1110011,
+			//      csr          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_010_00000_1110011,
 			name: "CSRRS",
 			extension: "Zicsr",
 			op: |cpu, word| {
@@ -892,9 +892,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      csr         rs1  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_011_0000_1110011,
+			//      csr          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_011_00000_1110011,
 			name: "CSRRC",
 			extension: "Zicsr",
 			op: |cpu, word| {
@@ -903,9 +903,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      csr         uimm  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_101_0000_1110011,
+			//      csr          uimm  fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_101_00000_1110011,
 			name: "CSRRWI",
 			extension: "Zicsr",
 			op: |cpu, word| {
@@ -914,9 +914,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      csr         uimm  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_110_0000_1110011,
+			//      csr          uimm  fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_110_00000_1110011,
 			name: "CSRRSI",
 			extension: "Zicsr",
 			op: |cpu, word| {
@@ -925,9 +925,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      csr         uimm  fn3 rd   op
-			mask: 0b00000000000_0000_111_0000_1111111,
-			reqd: 0b00000000000_0000_111_0000_1110011,
+			//      csr          uimm  fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_111_00000_1110011,
 			name: "CSRRCI",
 			extension: "Zicsr",
 			op: |cpu, word| {
@@ -937,9 +937,9 @@ pub mod ins {
 		},
 		// RV32M
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000001_0000_0000_000_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000001_00000_00000_000_00000_0110011,
 			name: "MUL",
 			extension: "RV32M",
 			op: |cpu, word| {
@@ -948,9 +948,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000001_0000_0000_001_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000001_00000_00000_001_00000_0110011,
 			name: "MULH",
 			extension: "RV32M",
 			op: |cpu, word| {
@@ -959,9 +959,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000001_0000_0000_010_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000001_00000_00000_010_00000_0110011,
 			name: "MULHSU",
 			extension: "RV32M",
 			op: |cpu, word| {
@@ -970,9 +970,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000001_0000_0000_011_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000001_00000_00000_011_00000_0110011,
 			name: "MULHU",
 			extension: "RV32M",
 			op: |cpu, word| {
@@ -981,9 +981,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000001_0000_0000_100_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000001_00000_00000_100_00000_0110011,
 			name: "DIV",
 			extension: "RV32M",
 			op: |cpu, word| {
@@ -992,9 +992,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000001_0000_0000_101_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000001_00000_00000_101_00000_0110011,
 			name: "DIVU",
 			extension: "RV32M",
 			op: |cpu, word| {
@@ -1003,9 +1003,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000001_0000_0000_110_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000001_00000_00000_110_00000_0110011,
 			name: "REM",
 			extension: "RV32M",
 			op: |cpu, word| {
@@ -1014,9 +1014,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000001_0000_0000_111_0000_0110011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000001_00000_00000_111_00000_0110011,
 			name: "REMU",
 			extension: "RV32M",
 			op: |cpu, word| {
@@ -1026,9 +1026,9 @@ pub mod ins {
 		},
 		// RV64M
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000001_0000_0000_000_0000_0111011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000001_00000_00000_000_00000_0111011,
 			name: "MULW",
 			extension: "RV64M",
 			op: |cpu, word| {
@@ -1037,9 +1037,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000001_0000_0000_100_0000_0111011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000001_00000_00000_100_00000_0111011,
 			name: "DIVW",
 			extension: "RV64M",
 			op: |cpu, word| {
@@ -1048,9 +1048,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000001_0000_0000_101_0000_0111011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000001_00000_00000_101_00000_0111011,
 			name: "DIVUW",
 			extension: "RV64M",
 			op: |cpu, word| {
@@ -1059,9 +1059,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000001_0000_0000_110_0000_0111011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000001_00000_00000_110_00000_0111011,
 			name: "REMW",
 			extension: "RV64M",
 			op: |cpu, word| {
@@ -1070,9 +1070,9 @@ pub mod ins {
 			},
 		},
 		Instruction {
-			//      fn7     rs2  rs1  fn3 rd   op
-			mask: 0b1111111_0000_0000_111_0000_1111111,
-			reqd: 0b0000001_0000_0000_111_0000_0111011,
+			//      fn7     rs2   rs1   fn3 rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0000001_00000_00000_111_00000_0111011,
 			name: "REMUW",
 			extension: "RV64M",
 			op: |cpu, word| {
