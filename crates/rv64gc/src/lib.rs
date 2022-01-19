@@ -245,7 +245,7 @@ pub mod ins {
 		op: fn(cpu: &mut Cpu, word: u32) -> Result<(), Trap>,
 	}
 
-	pub const INSTRUCTIONS: [Instruction; 83] = [
+	pub const INSTRUCTIONS: [Instruction; 94] = [
 		// RV32I
 		Instruction {
 			//      imm                  rd    op
@@ -1197,6 +1197,128 @@ pub mod ins {
 			reqd: 0b11100_0_0_00000_00000_010_00000_0101111,
 			name: "AMOMAXU.W",
 			extension: "RV32A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		// RV64A
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_11111_00000_111_00000_1111111,
+			reqd: 0b00010_0_0_00000_00000_011_00000_0101111,
+			name: "LR.D",
+			extension: "RV64A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b00011_0_0_00000_00000_011_00000_0101111,
+			name: "SC.D",
+			extension: "RV64A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b00001_0_0_00000_00000_011_00000_0101111,
+			name: "AMOSWAP.D",
+			extension: "RV64A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b00000_0_0_00000_00000_011_00000_0101111,
+			name: "AMOADD.D",
+			extension: "RV64A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b00100_0_0_00000_00000_011_00000_0101111,
+			name: "AMOXOR.D",
+			extension: "RV64A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b01100_0_0_00000_00000_011_00000_0101111,
+			name: "AMOAND.D",
+			extension: "RV64A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b01000_0_0_00000_00000_011_00000_0101111,
+			name: "AMOOR.D",
+			extension: "RV64A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b10000_0_0_00000_00000_011_00000_0101111,
+			name: "AMOMIN.D",
+			extension: "RV64A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b10100_0_0_00000_00000_011_00000_0101111,
+			name: "AMOMAX.D",
+			extension: "RV64A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b11000_0_0_00000_00000_011_00000_0101111,
+			name: "AMOMINU.D",
+			extension: "RV64A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b11100_0_0_00000_00000_011_00000_0101111,
+			name: "AMOMAXU.D",
+			extension: "RV64A",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
