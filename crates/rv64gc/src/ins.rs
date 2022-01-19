@@ -110,7 +110,11 @@ pub struct Instruction {
 	op: fn(cpu: &mut Cpu, word: u32) -> Result<(), Trap>,
 }
 
-#[allow(unused_doc_comments, clippy::unusual_byte_groupings, clippy::tabs_in_doc_comments)]
+#[allow(
+	unused_doc_comments,
+	clippy::unusual_byte_groupings,
+	clippy::tabs_in_doc_comments
+)]
 pub const INSTRUCTIONS: [Instruction; 156] = [
 	// RV32I
 	Instruction {
