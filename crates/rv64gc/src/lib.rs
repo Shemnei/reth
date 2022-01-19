@@ -245,7 +245,7 @@ pub mod ins {
 		op: fn(cpu: &mut Cpu, word: u32) -> Result<(), Trap>,
 	}
 
-	pub const INSTRUCTIONS: [Instruction; 120] = [
+	pub const INSTRUCTIONS: [Instruction; 124] = [
 		// RV32I
 		Instruction {
 			//      imm                  rd    op
@@ -1606,6 +1606,51 @@ pub mod ins {
 			reqd: 0b1111000_00000_00000_000_00000_1010011,
 			name: "FMV.W.X",
 			extension: "RV32F",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		// RV64F
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_11111_00000_000_00000_1111111,
+			reqd: 0b1100000_00010_00000_000_00000_1010011,
+			name: "FCVT.L.S",
+			extension: "RV64F",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_11111_00000_000_00000_1111111,
+			reqd: 0b1100000_00011_00000_000_00000_1010011,
+			name: "FCVT.LU.S",
+			extension: "RV64F",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_11111_00000_000_00000_1111111,
+			reqd: 0b1101000_00010_00000_000_00000_1010011,
+			name: "FCVT.S.L",
+			extension: "RV64F",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_11111_00000_000_00000_1111111,
+			reqd: 0b1101000_00011_00000_000_00000_1010011,
+			name: "FCVT.S.LU",
+			extension: "RV64F",
 			op: |cpu, word| {
 				// FormatS
 				Ok(())
