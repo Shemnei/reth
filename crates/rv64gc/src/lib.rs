@@ -1257,51 +1257,86 @@ pub mod mem {
 pub mod reg {
 	use crate::shared::{FloatWidth, IntWidth};
 
-	#[allow(non_camel_case_types)]
-	#[repr(usize)]
-	#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-	pub enum IntReg {
-		// Always `0`.
-		x0,
-		// Used to hold return address.
-		x1,
-		// Used stack pointer.
-		x2,
-		x3,
-		x4,
-		// Alternative link register for x1.
-		x5,
-		x6,
-		x7,
-		x8,
-		x9,
-		x10,
-		x11,
-		x12,
-		x13,
-		x14,
-		x15,
-		x16,
-		x17,
-		x18,
-		x19,
-		x20,
-		x21,
-		x22,
-		x23,
-		x24,
-		x25,
-		x26,
-		x27,
-		x28,
-		x29,
-		x30,
-		x31,
+	macro_rules! regs {
+		(
+			$regs:ident {
+				$(
+					$( #[doc = $doc:literal] )*
+					Reg( $ident:ident, name = $name:literal, desc = $desc:literal )
+				),+
+			}
+		) => {
+			#[allow(non_camel_case_types)]
+			#[repr(usize)]
+			#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+			pub enum $regs {
+				$(
+					$( #[doc = $doc] )*
+					$ident,
+				)+
+			}
+
+			impl $regs {
+				pub const fn name(&self) -> &'static str {
+					match self {
+						$(
+							Self::$ident => $name,
+						)+
+					}
+				}
+
+				pub const fn description(&self) -> &'static str {
+					match self {
+						$(
+							Self::$ident => $desc,
+						)+
+					}
+				}
+			}
+
+			impl std::convert::From<$regs> for usize {
+				fn from(value: $regs) -> usize {
+					value as usize
+				}
+			}
+		};
 	}
 
-	impl From<IntReg> for usize {
-		fn from(value: IntReg) -> Self {
-			value as usize
+	regs! {
+		IntReg {
+			/// Always `0`
+			Reg(x0, name = "Zero", desc = "Always zero"),
+			Reg(x1, name = "ra", desc = "Return address"),
+			Reg(x2, name = "sp", desc = "Stack pointer"),
+			Reg(x3, name = "gp", desc = "Global pointer"),
+			Reg(x4, name = "tp", desc = "Thread pointer"),
+			Reg(x5, name = "t0", desc = "Temporary / alternate return address"),
+			Reg(x6, name = "t1", desc = "Temporary"),
+			Reg(x7, name = "t2", desc = "Temporary"),
+			Reg(x8, name = "s0", desc = "Saved register / frame pointer"),
+			Reg(x9, name = "s1", desc = "Saved register"),
+			Reg(x10, name = "a0", desc = "Function argument / return value"),
+			Reg(x11, name = "a1", desc = "Function argument"),
+			Reg(x12, name = "a2", desc = "Function argument"),
+			Reg(x13, name = "a3", desc = "Function argument"),
+			Reg(x14, name = "a4", desc = "Function argument"),
+			Reg(x15, name = "a5", desc = "Function argument"),
+			Reg(x16, name = "a6", desc = "Function argument"),
+			Reg(x17, name = "a7", desc = "Function argument"),
+			Reg(x18, name = "s2", desc = "Saved register"),
+			Reg(x19, name = "s3", desc = "Saved register"),
+			Reg(x20, name = "s4", desc = "Saved register"),
+			Reg(x21, name = "s5", desc = "Saved register"),
+			Reg(x22, name = "s6", desc = "Saved register"),
+			Reg(x23, name = "s7", desc = "Saved register"),
+			Reg(x24, name = "s8", desc = "Saved register"),
+			Reg(x25, name = "s9", desc = "Saved register"),
+			Reg(x26, name = "s10", desc = "Saved register"),
+			Reg(x27, name = "s11", desc = "Saved register"),
+			Reg(x28, name = "t3", desc = "Temporary"),
+			Reg(x29, name = "t4", desc = "Temporary"),
+			Reg(x30, name = "t5", desc = "Temporary"),
+			Reg(x31, name = "t6", desc = "Temporary")
 		}
 	}
 
@@ -1330,47 +1365,40 @@ pub mod reg {
 		}
 	}
 
-	#[allow(non_camel_case_types)]
-	#[repr(usize)]
-	#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-	pub enum FloatReg {
-		f0,
-		f1,
-		f2,
-		f3,
-		f4,
-		f5,
-		f6,
-		f7,
-		f8,
-		f9,
-		f10,
-		f11,
-		f12,
-		f13,
-		f14,
-		f15,
-		f16,
-		f17,
-		f18,
-		f19,
-		f20,
-		f21,
-		f22,
-		f23,
-		f24,
-		f25,
-		f26,
-		f27,
-		f28,
-		f29,
-		f30,
-		f31,
-	}
-
-	impl From<FloatReg> for usize {
-		fn from(value: FloatReg) -> Self {
-			value as usize
+	regs! {
+		FloatReg {
+			Reg(f0, name = "ft0", desc = "Floating-point temporaries"),
+			Reg(f1, name = "ft1", desc = "Floating-point temporaries"),
+			Reg(f2, name = "ft2", desc = "Floating-point temporaries"),
+			Reg(f3, name = "ft3", desc = "Floating-point temporaries"),
+			Reg(f4, name = "ft4", desc = "Floating-point temporaries"),
+			Reg(f5, name = "ft5", desc = "Floating-point temporaries"),
+			Reg(f6, name = "ft6", desc = "Floating-point temporaries"),
+			Reg(f7, name = "ft7", desc = "Floating-point temporaries"),
+			Reg(f8, name = "fs0", desc = "Floating-point saved registers"),
+			Reg(f9, name = "fs1", desc = "Floating-point saved registers"),
+			Reg(f10, name = "fa0", desc = "Floating-point arguments/return values"),
+			Reg(f11, name = "fa1", desc = "Floating-point arguments/return values"),
+			Reg(f12, name = "fa2", desc = "Floating-point arguments/return values"),
+			Reg(f13, name = "fa3", desc = "Floating-point arguments/return values"),
+			Reg(f14, name = "fa4", desc = "Floating-point arguments/return values"),
+			Reg(f15, name = "fa5", desc = "Floating-point arguments/return values"),
+			Reg(f16, name = "fa6", desc = "Floating-point arguments/return values"),
+			Reg(f17, name = "fa7", desc = "Floating-point arguments/return values"),
+			Reg(f18, name = "fs2", desc = "Floating-point saved registers"),
+			Reg(f19, name = "fs3", desc = "Floating-point saved registers"),
+			Reg(f20, name = "fs4", desc = "Floating-point saved registers"),
+			Reg(f21, name = "fs5", desc = "Floating-point saved registers"),
+			Reg(f22, name = "fs6", desc = "Floating-point saved registers"),
+			Reg(f23, name = "fs7", desc = "Floating-point saved registers"),
+			Reg(f24, name = "fs8", desc = "Floating-point saved registers"),
+			Reg(f25, name = "fs9", desc = "Floating-point saved registers"),
+			Reg(f26, name = "fs10", desc = "Floating-point saved registers"),
+			Reg(f27, name = "fs11", desc = "Floating-point saved registers"),
+			Reg(f28, name = "ft8", desc = "Floating-point temporaries"),
+			Reg(f29, name = "ft9", desc = "Floating-point temporaries"),
+			Reg(f30, name = "ft10", desc = "Floating-point temporaries"),
+			Reg(f31, name = "ft11", desc = "Floating-point temporaries")
 		}
 	}
 
