@@ -245,7 +245,7 @@ pub mod ins {
 		op: fn(cpu: &mut Cpu, word: u32) -> Result<(), Trap>,
 	}
 
-	pub const INSTRUCTIONS: [Instruction; 72] = [
+	pub const INSTRUCTIONS: [Instruction; 83] = [
 		// RV32I
 		Instruction {
 			//      imm                  rd    op
@@ -1075,6 +1075,128 @@ pub mod ins {
 			reqd: 0b0000001_00000_00000_111_00000_0111011,
 			name: "REMUW",
 			extension: "RV64M",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		// RV32A
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_11111_00000_111_00000_1111111,
+			reqd: 0b00010_0_0_00000_00000_010_00000_0101111,
+			name: "LR.W",
+			extension: "RV32A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b00011_0_0_00000_00000_010_00000_0101111,
+			name: "SC.W",
+			extension: "RV32A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b00001_0_0_00000_00000_010_00000_0101111,
+			name: "AMOSWAP.W",
+			extension: "RV32A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b00000_0_0_00000_00000_010_00000_0101111,
+			name: "AMOADD.W",
+			extension: "RV32A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b00100_0_0_00000_00000_010_00000_0101111,
+			name: "AMOXOR.W",
+			extension: "RV32A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b01100_0_0_00000_00000_010_00000_0101111,
+			name: "AMOAND.W",
+			extension: "RV32A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b01000_0_0_00000_00000_010_00000_0101111,
+			name: "AMOOR.W",
+			extension: "RV32A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b10000_0_0_00000_00000_010_00000_0101111,
+			name: "AMOMIN.W",
+			extension: "RV32A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b10100_0_0_00000_00000_010_00000_0101111,
+			name: "AMOMAX.W",
+			extension: "RV32A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b11000_0_0_00000_00000_010_00000_0101111,
+			name: "AMOMINU.W",
+			extension: "RV32A",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      fn7       rs2   rs1   fn3 rd    op
+			mask: 0b11111_0_0_00000_00000_111_00000_1111111,
+			reqd: 0b11100_0_0_00000_00000_010_00000_0101111,
+			name: "AMOMAXU.W",
+			extension: "RV32A",
 			op: |cpu, word| {
 				// FormatR
 				Ok(())
