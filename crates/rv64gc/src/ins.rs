@@ -69,12 +69,14 @@ pub mod format {
 
 	// TODO: maybe replace with handwritten ones for perf?
 
-	instruction_format!(u32 => FormatR(rd[7:11]: u8, rs1[15:19]: u8, rs2[20:24]: u8));
-	instruction_format!(u32 => FormatI(rd[7:11]: u8, rs1[15:19]: u8,                 imm[sign@31 => 20:31]: as i32 => i64));
-	instruction_format!(u32 => FormatS(              rs1[15:19]: u8, rs2[20:24]: u8, imm[sign@31 => 7:11 @ 0 | 25:31 @ 5]: as i32 => i64));
-	instruction_format!(u32 => FormatB(              rs1[15:19]: u8, rs2[20:24]: u8, imm[sign@31 => shl 1 => 8:11 @ 1 | 25:30 @ 5 | 7:7 @ 11 | 31:31 @ 12]: as i32 as i64 => u64));
-	instruction_format!(u32 => FormatU(rd[7:11]: u8,                                 imm[sign@31 => shl 12 => 12:31]: as i32 => i64));
-	instruction_format!(u32 => FormatJ(rd[7:11]: u8,                                 imm[sign@31 => shl 1 => 21:30 @ 1 | 20:20 @ 11 | 12:19 @ 12 | 31:31 @ 20]: as i32 as i64 => u64));
+	instruction_format!(u32 => FormatR( rd[7:11]: u8, rs1[15:19]: u8, rs2[20:24]: u8));
+	instruction_format!(u32 => FormatI( rd[7:11]: u8, rs1[15:19]: u8,                 imm[sign@31 => 20:31]: as i32 => i64));
+	instruction_format!(u32 => FormatS(               rs1[15:19]: u8, rs2[20:24]: u8, imm[sign@31 => 7:11 @ 0 | 25:31 @ 5]: as i32 => i64));
+	instruction_format!(u32 => FormatB(               rs1[15:19]: u8, rs2[20:24]: u8, imm[sign@31 => shl 1 => 8:11 @ 1 | 25:30 @ 5 | 7:7 @ 11 | 31:31 @ 12]: as i32 as i64 => u64));
+	instruction_format!(u32 => FormatU( rd[7:11]: u8,                                 imm[sign@31 => shl 12 => 12:31]: as i32 => i64));
+	instruction_format!(u32 => FormatJ( rd[7:11]: u8,                                 imm[sign@31 => shl 1 => 21:30 @ 1 | 20:20 @ 11 | 12:19 @ 12 | 31:31 @ 20]: as i32 as i64 => u64));
+
+	instruction_format!(u32 => FormatR4(rd[7:11]: u8, rs1[15:19]: u8, rs2[20:24]: u8, rs3[27:31]: u8));
 }
 
 use crate::cpu::Cpu;
