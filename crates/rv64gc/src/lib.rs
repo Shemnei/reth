@@ -1770,7 +1770,7 @@ pub mod ins {
 		Instruction {
 			//      imm     rs2   rs1   rm  rd    op
 			mask: 0b1111111_11111_00000_000_00000_1111111,
-			reqd: 0b0001101_00000_00000_000_00000_1010011,
+			reqd: 0b0101101_00000_00000_000_00000_1010011,
 			name: "FSQRT.D",
 			extension: "RV32D",
 			op: |cpu, word| {
