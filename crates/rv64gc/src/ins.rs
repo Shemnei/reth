@@ -31,7 +31,7 @@ pub mod format {
 						{
 							$(
 								// "Sign extend" when bit is given
-								if size >> $sign == 1 {
+								if (size & (1 << $sign)) > 0 {
 									$field = !0;
 								}
 							)?
