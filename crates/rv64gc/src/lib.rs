@@ -245,7 +245,7 @@ pub mod ins {
 		op: fn(cpu: &mut Cpu, word: u32) -> Result<(), Trap>,
 	}
 
-	pub const INSTRUCTIONS: [Instruction; 124] = [
+	pub const INSTRUCTIONS: [Instruction; 150] = [
 		// RV32I
 		Instruction {
 			//      imm                  rd    op
@@ -1656,6 +1656,295 @@ pub mod ins {
 				Ok(())
 			},
 		},
+		// RV32D
+		Instruction {
+			//      imm          rs1   fn3 rd    op
+			mask: 0b000000000000_00000_111_00000_1111111,
+			reqd: 0b000000000000_00000_011_00000_0000111,
+			name: "FLD",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatI
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   fn3 imm   op
+			mask: 0b0000000_00000_00000_111_00000_1111111,
+			reqd: 0b0000000_00000_00000_011_00000_0100111,
+			name: "FSD",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      rs3      rs2   rs1   rm  rd    op
+			mask: 0b00000_11_00000_00000_000_00000_1111111,
+			reqd: 0b00000_01_00000_00000_000_00000_1000011,
+			name: "FMADD.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      rs3      rs2   rs1   rm  rd    op
+			mask: 0b00000_11_00000_00000_000_00000_1111111,
+			reqd: 0b00000_01_00000_00000_000_00000_1000111,
+			name: "FMSUB.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      rs3      rs2   rs1   rm  rd    op
+			mask: 0b00000_11_00000_00000_000_00000_1111111,
+			reqd: 0b00000_01_00000_00000_000_00000_1001011,
+			name: "FNMSUB.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      rs3      rs2   rs1   rm  rd    op
+			mask: 0b00000_11_00000_00000_000_00000_1111111,
+			reqd: 0b00000_01_00000_00000_000_00000_1001111,
+			name: "FNMADD.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatR
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_00000_00000_000_00000_1111111,
+			reqd: 0b0000001_00000_00000_000_00000_1010011,
+			name: "FADD.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_00000_00000_000_00000_1111111,
+			reqd: 0b0000101_00000_00000_000_00000_1010011,
+			name: "FSUB.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_00000_00000_000_00000_1111111,
+			reqd: 0b0001001_00000_00000_000_00000_1010011,
+			name: "FMUL.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_00000_00000_000_00000_1111111,
+			reqd: 0b0001101_00000_00000_000_00000_1010011,
+			name: "FDIV.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_11111_00000_000_00000_1111111,
+			reqd: 0b0001101_00000_00000_000_00000_1010011,
+			name: "FSQRT.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0010001_00000_00000_000_00000_1010011,
+			name: "FSGNJ.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0010001_00000_00000_001_00000_1010011,
+			name: "FSGNJN.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0010001_00000_00000_010_00000_1010011,
+			name: "FSGNJX.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0010101_00000_00000_000_00000_1010011,
+			name: "FMIN.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b0010101_00000_00000_001_00000_1010011,
+			name: "FMAX.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_11111_00000_000_00000_1111111,
+			reqd: 0b0100000_00001_00000_000_00000_1010011,
+			name: "FCVT.S.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_11111_00000_000_00000_1111111,
+			reqd: 0b0100001_00000_00000_000_00000_1010011,
+			name: "FCVT.D.S",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b1010001_00000_00000_010_00000_1010011,
+			name: "FEQ.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b1010001_00000_00000_001_00000_1010011,
+			name: "FLT.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_00000_00000_111_00000_1111111,
+			reqd: 0b1010001_00000_00000_000_00000_1010011,
+			name: "FLE.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_11111_00000_111_00000_1111111,
+			reqd: 0b1110001_00000_00000_001_00000_1010011,
+			name: "FCLASS.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_11111_00000_000_00000_1111111,
+			reqd: 0b1100001_00000_00000_000_00000_1010011,
+			name: "FCVT.W.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_11111_00000_000_00000_1111111,
+			reqd: 0b1100001_00001_00000_000_00000_1010011,
+			name: "FCVT.WU.D",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_11111_00000_000_00000_1111111,
+			reqd: 0b1101001_00000_00000_000_00000_1010011,
+			name: "FCVT.D.W",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+		Instruction {
+			//      imm     rs2   rs1   rm  rd    op
+			mask: 0b1111111_11111_00000_000_00000_1111111,
+			reqd: 0b1101001_00001_00000_000_00000_1010011,
+			name: "FCVT.D.WU",
+			extension: "RV32D",
+			op: |cpu, word| {
+				// FormatS
+				Ok(())
+			},
+		},
+
+		// TODO: RV64D
 	];
 
 	#[test]
