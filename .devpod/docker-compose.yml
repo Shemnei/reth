@@ -1,0 +1,12 @@
+# Run with `HOST_UID=$(id -u) HOST_GID=$(id -g) docker-compose run --rm dev`
+# To rebuild this image you must use `docker-compose build` or
+# `docker-compose up --build`.
+
+version: "3.3"
+services:
+  dev:
+    build: .
+    volumes:
+      - "../:/home/dockeruser/project"
+    environment:
+      - USER=dockeruser
