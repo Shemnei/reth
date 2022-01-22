@@ -242,7 +242,7 @@ pub mod header {
 
 			pub mod version {
 				/// Field `ei_version`: Original and current version.
-				pub const EI_VERSION_CURRENT: u8 = 1;
+				pub const EI_VERSION_CURRENT: u32 = 1;
 			}
 
 			pub mod osabi {
