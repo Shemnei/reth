@@ -116,7 +116,8 @@ pub struct Instruction {
 	pub(crate) reqd: u32,
 	pub(crate) name: &'static str,
 	pub(crate) extension: &'static str,
-	pub(crate) op: fn(cpu: &mut Cpu, word: u32, address: Address) -> Result<(), Trap>,
+	pub(crate) op:
+		fn(cpu: &mut Cpu, word: u32, address: Address) -> Result<(), Trap>,
 }
 
 #[allow(
@@ -124,7 +125,7 @@ pub struct Instruction {
 	clippy::unusual_byte_groupings,
 	clippy::tabs_in_doc_comments
 )]
-pub const INSTRUCTIONS: [Instruction; 156] = [
+pub const INSTRUCTIONS: [Instruction; 158] = [
 	// RV32I
 	Instruction {
 		//      imm                  rd    op
@@ -2251,6 +2252,30 @@ pub const INSTRUCTIONS: [Instruction; 156] = [
 			Ok(())
 		},
 	},
+	// Priviledged
+	Instruction {
+		//      fn7     rs2   rs1   fn3 rd    op
+		mask: 0b1111111_11111_11111_111_11111_1111111,
+		reqd: 0b0001000_00010_00000_000_00000_1110011,
+		name: "SRET",
+		extension: "Privileged",
+		op: |cpu, word, _addr| {
+			// FormatR
+			Ok(())
+		},
+	},
+	Instruction {
+		//      fn7     rs2   rs1   fn3 rd    op
+		mask: 0b1111111_11111_11111_111_11111_1111111,
+		reqd: 0b0011000_00010_00000_000_00000_1110011,
+		name: "MRET",
+		extension: "Privileged",
+		op: |cpu, word, _addr| {
+			// FormatR
+			Ok(())
+		},
+	},
+	// TODO: remaining priviledged
 ];
 
 #[test]
