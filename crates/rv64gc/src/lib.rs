@@ -13,14 +13,15 @@ pub mod shared {
 	/// IALIGN (either 16/32 for instruction address alignment)
 	/// ILEN   (max. instruction length in bits)
 
-	pub type IntWidth = u64;
+	pub type IntWidth = i64;
+	pub type IntWidthU = i64;
 	pub type FloatWidth = f64;
 	pub type Width = IntWidth;
 
-	pub type Word = u32;
-	pub type HalfWord = u16;
-	pub type DoulbeWord = u64;
-	pub type QuadWord = u128;
+	pub type Word = i32;
+	pub type HalfWord = i16;
+	pub type DoulbeWord = i64;
+	pub type QuadWord = i128;
 
 	pub type Address = u64;
 
@@ -113,6 +114,8 @@ pub mod adr {
 			data: &[u8],
 		) -> Result<(), Self::Error>;
 
+		read!(read_u8: u8: le);
+
 		read!(read_u16_be: u16: be);
 		read!(read_u16_le: u16: le);
 
@@ -124,6 +127,8 @@ pub mod adr {
 
 		read!(read_u128_be: u128: be);
 		read!(read_u128_le: u128: le);
+
+		write!(write_u8: u8: le);
 
 		write!(write_u16_be: u16: be);
 		write!(write_u16_le: u16: le);
@@ -171,6 +176,7 @@ pub mod tra {
 pub mod mem {
 	use crate::adr::Addressable;
 	use crate::shared::Address;
+use crate::tra::Trap;
 
 	#[derive(Default, Debug)]
 	pub struct Memory(Vec<u8>);
@@ -217,6 +223,31 @@ pub mod mem {
 	impl MemoryManagementUnit {
 		pub fn tick(&mut self) {}
 	}
+
+	impl Addressable for MemoryManagementUnit {
+		type Address = Address;
+		type Error = Trap;
+
+		fn len(&self) -> usize {
+			todo!()
+		}
+
+		fn read(
+			&mut self,
+			addr: Self::Address,
+			data: &mut [u8],
+		) -> Result<(), Self::Error> {
+			todo!()
+		}
+
+		fn write(
+			&mut self,
+			addr: Self::Address,
+			data: &[u8],
+		) -> Result<(), Self::Error> {
+			todo!()
+		}
+	}
 }
 
 pub mod reg {
@@ -227,7 +258,7 @@ pub mod reg {
 			$regs:ident {
 				$(
 					$( #[doc = $doc:literal] )*
-					Reg( $ident:ident, name = $name:literal, desc = $desc:literal )
+					Reg( $idx:literal => $ident:ident, name = $name:literal, desc = $desc:literal )
 				),+
 			}
 		) => {
@@ -242,7 +273,7 @@ pub mod reg {
 					#[doc = $name]
 					#[doc = "`: "]
 					#[doc = $desc]
-					$ident,
+					$ident = $idx,
 				)+
 			}
 
@@ -269,43 +300,56 @@ pub mod reg {
 					value as usize
 				}
 			}
+
+			impl std::convert::TryFrom<u8> for $regs {
+				type Error = ();
+
+				fn try_from(value: u8) -> Result<Self, Self::Error> {
+					match value {
+						$(
+							$idx => Ok(Self::$ident),
+						)+
+						_ => Err(()),
+					}
+				}
+			}
 		};
 	}
 
 	regs! {
 		IntReg {
-			Reg(x0, name = "Zero", desc = "Always zero"),
-			Reg(x1, name = "ra", desc = "Return address"),
-			Reg(x2, name = "sp", desc = "Stack pointer"),
-			Reg(x3, name = "gp", desc = "Global pointer"),
-			Reg(x4, name = "tp", desc = "Thread pointer"),
-			Reg(x5, name = "t0", desc = "Temporary / alternate return address"),
-			Reg(x6, name = "t1", desc = "Temporary"),
-			Reg(x7, name = "t2", desc = "Temporary"),
-			Reg(x8, name = "s0", desc = "Saved register / frame pointer"),
-			Reg(x9, name = "s1", desc = "Saved register"),
-			Reg(x10, name = "a0", desc = "Function argument / return value"),
-			Reg(x11, name = "a1", desc = "Function argument"),
-			Reg(x12, name = "a2", desc = "Function argument"),
-			Reg(x13, name = "a3", desc = "Function argument"),
-			Reg(x14, name = "a4", desc = "Function argument"),
-			Reg(x15, name = "a5", desc = "Function argument"),
-			Reg(x16, name = "a6", desc = "Function argument"),
-			Reg(x17, name = "a7", desc = "Function argument"),
-			Reg(x18, name = "s2", desc = "Saved register"),
-			Reg(x19, name = "s3", desc = "Saved register"),
-			Reg(x20, name = "s4", desc = "Saved register"),
-			Reg(x21, name = "s5", desc = "Saved register"),
-			Reg(x22, name = "s6", desc = "Saved register"),
-			Reg(x23, name = "s7", desc = "Saved register"),
-			Reg(x24, name = "s8", desc = "Saved register"),
-			Reg(x25, name = "s9", desc = "Saved register"),
-			Reg(x26, name = "s10", desc = "Saved register"),
-			Reg(x27, name = "s11", desc = "Saved register"),
-			Reg(x28, name = "t3", desc = "Temporary"),
-			Reg(x29, name = "t4", desc = "Temporary"),
-			Reg(x30, name = "t5", desc = "Temporary"),
-			Reg(x31, name = "t6", desc = "Temporary")
+			Reg( 0 => x0, name = "Zero", desc = "Always zero"),
+			Reg( 1 => x1, name = "ra", desc = "Return address"),
+			Reg( 2 => x2, name = "sp", desc = "Stack pointer"),
+			Reg( 3 => x3, name = "gp", desc = "Global pointer"),
+			Reg( 4 => x4, name = "tp", desc = "Thread pointer"),
+			Reg( 5 => x5, name = "t0", desc = "Temporary / alternate return address"),
+			Reg( 6 => x6, name = "t1", desc = "Temporary"),
+			Reg( 7 => x7, name = "t2", desc = "Temporary"),
+			Reg( 8 => x8, name = "s0", desc = "Saved register / frame pointer"),
+			Reg( 9 => x9, name = "s1", desc = "Saved register"),
+			Reg(10 => x10, name = "a0", desc = "Function argument / return value"),
+			Reg(11 => x11, name = "a1", desc = "Function argument"),
+			Reg(12 => x12, name = "a2", desc = "Function argument"),
+			Reg(13 => x13, name = "a3", desc = "Function argument"),
+			Reg(14 => x14, name = "a4", desc = "Function argument"),
+			Reg(15 => x15, name = "a5", desc = "Function argument"),
+			Reg(16 => x16, name = "a6", desc = "Function argument"),
+			Reg(17 => x17, name = "a7", desc = "Function argument"),
+			Reg(18 => x18, name = "s2", desc = "Saved register"),
+			Reg(19 => x19, name = "s3", desc = "Saved register"),
+			Reg(20 => x20, name = "s4", desc = "Saved register"),
+			Reg(21 => x21, name = "s5", desc = "Saved register"),
+			Reg(22 => x22, name = "s6", desc = "Saved register"),
+			Reg(23 => x23, name = "s7", desc = "Saved register"),
+			Reg(24 => x24, name = "s8", desc = "Saved register"),
+			Reg(25 => x25, name = "s9", desc = "Saved register"),
+			Reg(26 => x26, name = "s10", desc = "Saved register"),
+			Reg(27 => x27, name = "s11", desc = "Saved register"),
+			Reg(28 => x28, name = "t3", desc = "Temporary"),
+			Reg(29 => x29, name = "t4", desc = "Temporary"),
+			Reg(30 => x30, name = "t5", desc = "Temporary"),
+			Reg(31 => x31, name = "t6", desc = "Temporary")
 		}
 	}
 
@@ -334,40 +378,55 @@ pub mod reg {
 		}
 	}
 
+	impl std::ops::Index<IntReg> for IntRegisters {
+		type Output = IntWidth;
+
+		fn index(&self, index: IntReg) -> &Self::Output {
+			&self.0[index as usize]
+		}
+	}
+
+	impl std::ops::IndexMut<IntReg> for IntRegisters {
+		fn index_mut(&mut self, index: IntReg) -> &mut Self::Output {
+			// TODO: prevent setting of `x0`
+			&mut self.0[index as usize]
+		}
+	}
+
 	regs! {
 		FloatReg {
-			Reg(f0, name = "ft0", desc = "Floating-point temporaries"),
-			Reg(f1, name = "ft1", desc = "Floating-point temporaries"),
-			Reg(f2, name = "ft2", desc = "Floating-point temporaries"),
-			Reg(f3, name = "ft3", desc = "Floating-point temporaries"),
-			Reg(f4, name = "ft4", desc = "Floating-point temporaries"),
-			Reg(f5, name = "ft5", desc = "Floating-point temporaries"),
-			Reg(f6, name = "ft6", desc = "Floating-point temporaries"),
-			Reg(f7, name = "ft7", desc = "Floating-point temporaries"),
-			Reg(f8, name = "fs0", desc = "Floating-point saved registers"),
-			Reg(f9, name = "fs1", desc = "Floating-point saved registers"),
-			Reg(f10, name = "fa0", desc = "Floating-point arguments/return values"),
-			Reg(f11, name = "fa1", desc = "Floating-point arguments/return values"),
-			Reg(f12, name = "fa2", desc = "Floating-point arguments/return values"),
-			Reg(f13, name = "fa3", desc = "Floating-point arguments/return values"),
-			Reg(f14, name = "fa4", desc = "Floating-point arguments/return values"),
-			Reg(f15, name = "fa5", desc = "Floating-point arguments/return values"),
-			Reg(f16, name = "fa6", desc = "Floating-point arguments/return values"),
-			Reg(f17, name = "fa7", desc = "Floating-point arguments/return values"),
-			Reg(f18, name = "fs2", desc = "Floating-point saved registers"),
-			Reg(f19, name = "fs3", desc = "Floating-point saved registers"),
-			Reg(f20, name = "fs4", desc = "Floating-point saved registers"),
-			Reg(f21, name = "fs5", desc = "Floating-point saved registers"),
-			Reg(f22, name = "fs6", desc = "Floating-point saved registers"),
-			Reg(f23, name = "fs7", desc = "Floating-point saved registers"),
-			Reg(f24, name = "fs8", desc = "Floating-point saved registers"),
-			Reg(f25, name = "fs9", desc = "Floating-point saved registers"),
-			Reg(f26, name = "fs10", desc = "Floating-point saved registers"),
-			Reg(f27, name = "fs11", desc = "Floating-point saved registers"),
-			Reg(f28, name = "ft8", desc = "Floating-point temporaries"),
-			Reg(f29, name = "ft9", desc = "Floating-point temporaries"),
-			Reg(f30, name = "ft10", desc = "Floating-point temporaries"),
-			Reg(f31, name = "ft11", desc = "Floating-point temporaries")
+			Reg( 0 => f0, name = "ft0", desc = "Floating-point temporaries"),
+			Reg( 1 => f1, name = "ft1", desc = "Floating-point temporaries"),
+			Reg( 2 => f2, name = "ft2", desc = "Floating-point temporaries"),
+			Reg( 3 => f3, name = "ft3", desc = "Floating-point temporaries"),
+			Reg( 4 => f4, name = "ft4", desc = "Floating-point temporaries"),
+			Reg( 5 => f5, name = "ft5", desc = "Floating-point temporaries"),
+			Reg( 6 => f6, name = "ft6", desc = "Floating-point temporaries"),
+			Reg( 7 => f7, name = "ft7", desc = "Floating-point temporaries"),
+			Reg( 8 => f8, name = "fs0", desc = "Floating-point saved registers"),
+			Reg( 9 => f9, name = "fs1", desc = "Floating-point saved registers"),
+			Reg(10 => f10, name = "fa0", desc = "Floating-point arguments/return values"),
+			Reg(11 => f11, name = "fa1", desc = "Floating-point arguments/return values"),
+			Reg(12 => f12, name = "fa2", desc = "Floating-point arguments/return values"),
+			Reg(13 => f13, name = "fa3", desc = "Floating-point arguments/return values"),
+			Reg(14 => f14, name = "fa4", desc = "Floating-point arguments/return values"),
+			Reg(15 => f15, name = "fa5", desc = "Floating-point arguments/return values"),
+			Reg(16 => f16, name = "fa6", desc = "Floating-point arguments/return values"),
+			Reg(17 => f17, name = "fa7", desc = "Floating-point arguments/return values"),
+			Reg(18 => f18, name = "fs2", desc = "Floating-point saved registers"),
+			Reg(19 => f19, name = "fs3", desc = "Floating-point saved registers"),
+			Reg(20 => f20, name = "fs4", desc = "Floating-point saved registers"),
+			Reg(21 => f21, name = "fs5", desc = "Floating-point saved registers"),
+			Reg(22 => f22, name = "fs6", desc = "Floating-point saved registers"),
+			Reg(23 => f23, name = "fs7", desc = "Floating-point saved registers"),
+			Reg(24 => f24, name = "fs8", desc = "Floating-point saved registers"),
+			Reg(25 => f25, name = "fs9", desc = "Floating-point saved registers"),
+			Reg(26 => f26, name = "fs10", desc = "Floating-point saved registers"),
+			Reg(27 => f27, name = "fs11", desc = "Floating-point saved registers"),
+			Reg(28 => f28, name = "ft8", desc = "Floating-point temporaries"),
+			Reg(29 => f29, name = "ft9", desc = "Floating-point temporaries"),
+			Reg(30 => f30, name = "ft10", desc = "Floating-point temporaries"),
+			Reg(31 => f31, name = "ft11", desc = "Floating-point temporaries")
 		}
 	}
 
@@ -390,7 +449,7 @@ pub mod reg {
 pub mod cpu {
 	use crate::mem::MemoryManagementUnit;
 	use crate::reg::{FloatRegisters, IntRegisters};
-	use crate::shared::IntWidth;
+	use crate::shared::{Address, IntWidth};
 
 	#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 	pub enum Status {
@@ -411,7 +470,7 @@ pub mod cpu {
 		status: Status,
 
 		// Registers
-		pub pc: IntWidth,
+		pub pc: Address,
 		pub xregs: IntRegisters,
 		pub fregs: FloatRegisters,
 

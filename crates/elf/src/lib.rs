@@ -120,6 +120,7 @@ pub mod error {
 	pub enum ErrorKind {
 		InsufficantSize,
 		InvalidMagic,
+		InvalidClass,
 		UnknownEndianess,
 	}
 
@@ -131,6 +132,10 @@ pub mod error {
 				}
 				Self::InvalidMagic => f.write_str(
 					"Found invalid magic constant at the start of the header",
+				),
+				Self::InvalidClass => f.write_str(
+					"Found invalid class in the elf header (expected 32 or \
+					 64 bit)",
 				),
 				Self::UnknownEndianess => f.write_str(
 					"Found unknown endianness in field `e_ident[EI_DATA]`",
@@ -831,6 +836,21 @@ pub mod program_header {
 					p_align: consume!(bytes, endianness => u32)?,
 				})
 			}
+
+			pub fn extract_data<'a>(&self, bytes: &'a [u8]) -> &'a [u8] {
+				let start = self.p_offset as usize;
+				let end = start + (self.p_filesz as usize);
+
+				core::ops::Index::index(bytes, start..end)
+			}
+		}
+
+		impl core::ops::Index<&ProgramHeader> for &[u8] {
+			type Output = [u8];
+
+			fn index(&self, index: &ProgramHeader) -> &Self::Output {
+				index.extract_data(self)
+			}
 		}
 
 		#[rustfmt::skip]
@@ -916,6 +936,21 @@ pub mod program_header {
 					p_memsz: consume!(bytes, endianness => u64)?,
 					p_align: consume!(bytes, endianness => u64)?,
 				})
+			}
+
+			pub fn extract_data<'a>(&self, bytes: &'a [u8]) -> &'a [u8] {
+				let start = self.p_offset as usize;
+				let end = start + (self.p_filesz as usize);
+
+				core::ops::Index::index(bytes, start..end)
+			}
+		}
+
+		impl core::ops::Index<&ProgramHeader> for &[u8] {
+			type Output = [u8];
+
+			fn index(&self, index: &ProgramHeader) -> &Self::Output {
+				index.extract_data(self)
 			}
 		}
 
@@ -1138,7 +1173,22 @@ pub mod section_header {
                         sh_entsize: consume!(bytes, endianness => $size)?,
                     })
 				}
+
+				pub fn extract_data<'a>(&self, bytes: &'a[u8]) -> &'a [u8] {
+					let start = self.sh_offset as usize;
+					let end = start + (self.sh_size as usize);
+
+					core::ops::Index::index(bytes, start..end)
+				}
 			}
+
+			impl core::ops::Index<&SectionHeader> for &[u8] {
+				type Output = [u8];
+
+				fn index(&self, index: &SectionHeader) -> &Self::Output {
+					index.extract_data(self)
+				}
+   			}
 
 			impl core::fmt::Display for SectionHeader {
 				fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
@@ -1177,5 +1227,308 @@ pub mod section_header {
 
 	pub mod elf64 {
 		section_header!(u64);
+	}
+}
+
+pub mod strtab {
+	pub const DEFAULT_DELIM: u8 = b'\0';
+
+	pub struct Strtab<'a> {
+		delim: u8,
+		data: &'a [u8],
+	}
+
+	impl<'a> Strtab<'a> {
+		pub fn new(delim: u8, data: &'a [u8]) -> Self {
+			Self { data, delim }
+		}
+
+		pub fn get_bytes(
+			&self,
+			index: usize,
+		) -> core::option::Option<&'a [u8]> {
+			self.data.split(|b| b == &self.delim).skip(index).next()
+		}
+
+		pub fn get_bytes_off(
+			&self,
+			offset: usize,
+		) -> core::option::Option<&'a [u8]> {
+			let data = core::ops::Index::index(self.data, offset..);
+			data.split(|b| b == &self.delim).next()
+		}
+
+		pub unsafe fn get_str(
+			&self,
+			index: usize,
+		) -> core::option::Option<
+			core::result::Result<&'a str, core::str::Utf8Error>,
+		> {
+			self.get_bytes(index).map(|b| core::str::from_utf8(b))
+		}
+
+		pub unsafe fn get_str_unchecked(
+			&self,
+			index: usize,
+		) -> core::option::Option<&'a str> {
+			self.get_bytes(index).map(|b| core::str::from_utf8_unchecked(b))
+		}
+
+		pub unsafe fn get_str_off_unchecked(
+			&self,
+			offset: usize,
+		) -> core::option::Option<&'a str> {
+			self.get_bytes_off(offset)
+				.map(|b| core::str::from_utf8_unchecked(b))
+		}
+	}
+}
+
+pub mod symtab {
+	macro_rules! symbol_table {
+		( $size:ty ) => {
+			#[repr(C)]
+			#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+			pub struct Symbol {
+				/// Field `st_name`: Name of the symbol.
+				pub st_name: u32,
+
+				/// Field `st_value`: Value of the symbol.
+				pub st_value: $size,
+
+				/// Field `st_size`: Size of the symbol.
+				pub st_size: $size,
+
+				/// Field `st_info`: Additional information.
+				pub st_info: u8,
+
+				/// Field `st_other`: Other (currently not used).
+				pub st_other: u8,
+
+				/// Field `st_shndx`: Index of the SectionHeader.
+				pub st_shndx: u16,
+			}
+
+			impl Symbol {
+                #[allow(unused_assignments, clippy::eval_order_dependence)]
+				pub fn from_bytes(endianness: u8, mut bytes: &[u8]) -> crate::error::Result<Self> {
+					use crate::util::consume;
+
+                    Ok(Self {
+                        st_name: consume!(bytes, endianness => u32)?,
+                        st_value: consume!(bytes, endianness => $size)?,
+                        st_size: consume!(bytes, endianness => $size)?,
+                        st_info: consume!(bytes, endianness => u8)?,
+                        st_other: consume!(bytes, endianness => u8)?,
+                        st_shndx: consume!(bytes, endianness => u16)?,
+                    })
+				}
+			}
+
+			impl core::fmt::Display for Symbol {
+				fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+					f.write_fmt(format_args!(r#"Symbol:
+	st_name : {}
+	st_value: {}
+	st_size : {}
+	st_info : {}
+	st_other: {}
+	st_shndx: {}"#,
+						self.st_name,
+						self.st_value,
+						self.st_size,
+						self.st_info,
+						self.st_other,
+						self.st_shndx,
+					))
+				}
+			}
+
+			pub struct Symtab<'a> {
+				endianness: u8,
+				data: &'a [u8],
+			}
+
+			impl<'a> Symtab<'a> {
+				const SYMBOL_SIZE: usize = core::mem::size_of::<Symbol>();
+
+				pub fn new(endianness: u8, data: &'a [u8]) -> Self {
+					Self { endianness, data }
+				}
+
+				pub fn len(&self) -> usize {
+					self.data.len() / Self::SYMBOL_SIZE
+				}
+
+				pub fn get_symbol(
+					&self,
+					index: usize,
+				) -> core::option::Option<Symbol> {
+					let start = index * Self::SYMBOL_SIZE;
+
+					if start < self.data.len() {
+						let data = core::ops::Index::index(self.data, start..);
+						Symbol::from_bytes(self.endianness, data).ok()
+					} else {
+						None
+					}
+				}
+			}
+		};
+	}
+
+	pub mod elf32 {
+		symbol_table!(u32);
+	}
+
+	pub mod elf64 {
+		symbol_table!(u64);
+	}
+}
+
+#[cfg(feature = "std")]
+pub mod elf {
+	use crate::error::{Error, ErrorKind, Result};
+	use crate::header::consts::ident::class::{EI_CLASS_32, EI_CLASS_64};
+	use crate::header::consts::ident::index::EI_CLASS;
+	use crate::header::elf32::Header as Header32;
+	use crate::header::elf64::Header as Header64;
+	use crate::program_header::elf32::ProgramHeader as ProgramHeader32;
+	use crate::program_header::elf64::ProgramHeader as ProgramHeader64;
+	use crate::section_header::elf32::SectionHeader as SectionHeader32;
+	use crate::section_header::elf64::SectionHeader as SectionHeader64;
+
+	pub enum Elf<'a> {
+		Elf32 {
+			bytes: &'a [u8],
+			header: Header32,
+			pheaders: Vec<ProgramHeader32>,
+			sheaders: Vec<SectionHeader32>,
+		},
+		Elf64 {
+			bytes: &'a [u8],
+			header: Header64,
+			pheaders: Vec<ProgramHeader64>,
+			sheaders: Vec<SectionHeader64>,
+		},
+	}
+
+	impl<'a> Elf<'a> {
+		pub fn from_bytes(bytes: &'a [u8]) -> Result<Self> {
+			let class = *core::ops::Index::index(bytes, EI_CLASS);
+
+			match class {
+				EI_CLASS_32 => Self::from_bytes_c32(bytes),
+				EI_CLASS_64 => Self::from_bytes_c64(bytes),
+				_ => return Err(Error::new(ErrorKind::InvalidClass)),
+			}
+		}
+
+		fn from_bytes_c32(bytes: &'a [u8]) -> Result<Self> {
+			let header = Header32::from_bytes(bytes)?;
+			assert_eq!(header.e_ident.ei_class(), EI_CLASS_32);
+			let endianness = header.e_ident.ei_data();
+
+			// ProgramHeader
+			let pheaders = {
+				let ph_offset = header.e_phoff;
+				let ph_count = header.e_phnum;
+				let ph_size = header.e_phentsize;
+
+				let mut pheaders = Vec::with_capacity(ph_count as usize);
+
+				for idx in 0..ph_count {
+					let start =
+						(ph_offset + (idx as u32 * ph_size as u32)) as usize;
+					let ph = ProgramHeader32::from_bytes(
+						endianness,
+						core::ops::Index::index(bytes, start..),
+					)?;
+
+					pheaders.push(ph);
+				}
+
+				pheaders
+			};
+
+			// SectionHeader
+			let sheaders = {
+				let sh_offset = header.e_shoff;
+				let sh_count = header.e_shnum;
+				let sh_size = header.e_shentsize;
+
+				let mut sheaders = Vec::with_capacity(sh_count as usize);
+
+				for idx in 0..sh_count {
+					let start =
+						(sh_offset + (idx as u32 * sh_size as u32)) as usize;
+					let sh = SectionHeader32::from_bytes(
+						endianness,
+						core::ops::Index::index(bytes, start..),
+					)?;
+
+					sheaders.push(sh);
+				}
+
+				sheaders
+			};
+
+			Ok(Self::Elf32 { bytes, header, pheaders, sheaders })
+		}
+
+		fn from_bytes_c64(bytes: &'a [u8]) -> Result<Self> {
+			#[cfg(not(target_pointer_width = "64"))]
+			compile_error!("Needs 64 bits");
+
+			let header = Header64::from_bytes(bytes)?;
+			assert_eq!(header.e_ident.ei_class(), EI_CLASS_64);
+			let endianness = header.e_ident.ei_data();
+
+			// ProgramHeader
+			let pheaders = {
+				let ph_offset = header.e_phoff;
+				let ph_count = header.e_phnum;
+				let ph_size = header.e_phentsize;
+
+				let mut pheaders = Vec::with_capacity(ph_count as usize);
+
+				for idx in 0..ph_count {
+					let start =
+						(ph_offset + (idx as u64 * ph_size as u64)) as usize;
+					let ph = ProgramHeader64::from_bytes(
+						endianness,
+						core::ops::Index::index(bytes, start..),
+					)?;
+
+					pheaders.push(ph);
+				}
+
+				pheaders
+			};
+
+			// SectionHeader
+			let sheaders = {
+				let sh_offset = header.e_shoff;
+				let sh_count = header.e_shnum;
+				let sh_size = header.e_shentsize;
+
+				let mut sheaders = Vec::with_capacity(sh_count as usize);
+
+				for idx in 0..sh_count {
+					let start =
+						(sh_offset + (idx as u64 * sh_size as u64)) as usize;
+					let sh = SectionHeader64::from_bytes(
+						endianness,
+						core::ops::Index::index(bytes, start..),
+					)?;
+
+					sheaders.push(sh);
+				}
+
+				sheaders
+			};
+
+			Ok(Self::Elf64 { bytes, header, pheaders, sheaders })
+		}
 	}
 }
