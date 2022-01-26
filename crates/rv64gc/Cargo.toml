@@ -9,3 +9,5 @@ edition = "2021"
 incremental = true
 
 [dependencies]
+elf = { path = "../elf", features = ["std"] }
+riscv-decode = "0.2.0"

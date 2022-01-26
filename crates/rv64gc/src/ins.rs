@@ -112,11 +112,11 @@ fn resolve_xreg(cpu: &mut Cpu, reg: u8) -> IntReg {
 // Immediates are always sign-extended (Exception: 5-bit CSR instructions).
 // The sign bit for immediates is always the 31st bit.
 pub struct Instruction {
-	mask: u32,
-	reqd: u32,
-	name: &'static str,
-	extension: &'static str,
-	op: fn(cpu: &mut Cpu, word: u32, address: Address) -> Result<(), Trap>,
+	pub(crate) mask: u32,
+	pub(crate) reqd: u32,
+	pub(crate) name: &'static str,
+	pub(crate) extension: &'static str,
+	pub(crate) op: fn(cpu: &mut Cpu, word: u32, address: Address) -> Result<(), Trap>,
 }
 
 #[allow(

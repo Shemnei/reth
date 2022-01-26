@@ -1231,14 +1231,14 @@ pub mod section_header {
 }
 
 pub mod strtab {
-	pub const DEFAULT_DELIM: u8 = b'\0';
-
 	pub struct Strtab<'a> {
 		delim: u8,
 		data: &'a [u8],
 	}
 
 	impl<'a> Strtab<'a> {
+		pub const DEFAULT_DELIM: u8 = b'\0';
+
 		pub fn new(delim: u8, data: &'a [u8]) -> Self {
 			Self { data, delim }
 		}

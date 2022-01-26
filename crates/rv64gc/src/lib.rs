@@ -176,10 +176,10 @@ pub mod tra {
 pub mod mem {
 	use crate::adr::Addressable;
 	use crate::shared::Address;
-use crate::tra::Trap;
+	use crate::tra::Trap;
 
 	#[derive(Default, Debug)]
-	pub struct Memory(Vec<u8>);
+	pub struct Memory(pub Vec<u8>);
 
 	impl Addressable for Memory {
 		type Address = Address;
@@ -229,7 +229,7 @@ use crate::tra::Trap;
 		type Error = Trap;
 
 		fn len(&self) -> usize {
-			todo!()
+			self.memory.len()
 		}
 
 		fn read(
@@ -237,7 +237,7 @@ use crate::tra::Trap;
 			addr: Self::Address,
 			data: &mut [u8],
 		) -> Result<(), Self::Error> {
-			todo!()
+			Ok(self.memory.read(addr, data).unwrap())
 		}
 
 		fn write(
@@ -245,7 +245,7 @@ use crate::tra::Trap;
 			addr: Self::Address,
 			data: &[u8],
 		) -> Result<(), Self::Error> {
-			todo!()
+			Ok(self.memory.write(addr, data).unwrap())
 		}
 	}
 }
@@ -447,9 +447,16 @@ pub mod reg {
 }
 
 pub mod cpu {
+	use crate::adr::Addressable;
+	use crate::ins::{Instruction, INSTRUCTIONS};
 	use crate::mem::MemoryManagementUnit;
-	use crate::reg::{FloatRegisters, IntRegisters};
-	use crate::shared::{Address, IntWidth};
+	use crate::reg::{FloatRegisters, IntReg, IntRegisters};
+	use crate::shared::{Address, IntWidth, Word};
+	use crate::tra::Trap;
+
+	pub type Result<T, E = Trap> = std::result::Result<T, E>;
+
+	pub const PC_STEP: Address = 4;
 
 	#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 	pub enum Status {
@@ -480,7 +487,70 @@ pub mod cpu {
 
 	impl Cpu {
 		pub fn tick(&mut self) {
+			let inst_addr = self.pc;
+
+			let word = match self.fetch() {
+				Ok(word) => word,
+				Err(trap) => {
+					self.handle_trap(trap);
+					return;
+				}
+			};
+
+			// TODO: check instruction size (p. 8/26)
+
+			self.step_pc(PC_STEP);
+
+			let inst = self.decode(word).unwrap_or_else(|| {
+				panic!(
+					"Unknown instruction (pc: 0x{:016x}; inst: 0b{:032b}; \
+					 should: {:#?})",
+					// TODO: remove riscv_decode
+					inst_addr,
+					word,
+					riscv_decode::decode(word)
+				)
+			});
+
+			println!(">> Running: {}/{}", inst.extension, inst.name);
+
+			if let Err(trap) = (inst.op)(self, word, inst_addr) {
+				self.handle_trap(trap);
+				// Reset `x0` to `0` (allowed through Index)
+				// TODO: fix
+				self.xregs[IntReg::x0] = 0;
+				return;
+			}
+
 			self.mmu.tick();
+		}
+
+		fn handle_trap(&mut self, trap: Trap) {}
+
+		fn fetch(&mut self) -> Result<u32, Trap> {
+			match self.mmu.read_u32_le(self.pc) {
+				Ok(word) => Ok(word),
+				Err(err) => {
+					self.step_pc(PC_STEP);
+					Err(err)
+				}
+			}
+		}
+
+		fn step_pc(&mut self, step: Address) {
+			self.pc = self.pc.wrapping_add(step);
+		}
+
+		fn decode(&mut self, word: u32) -> Option<&Instruction> {
+			// TODO: cache
+
+			for inst in &INSTRUCTIONS {
+				if word & inst.mask == inst.reqd {
+					return Some(inst);
+				}
+			}
+
+			None
 		}
 	}
 }
